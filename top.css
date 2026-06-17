@@ -1,0 +1,450 @@
+/* 顶部导航栏整体布局 */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff0f5;
+    border-bottom: 1px solid #ffc0cb;
+    min-height: 36px;
+}
+
+/* 收货地址区域 - 最左侧 */
+.location-section {
+    flex-shrink: 0;
+}
+
+.location-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.location-link:hover {
+    color: #e53935;
+}
+
+.location-link i {
+    color: #e53935;
+}
+
+/* 导航链接区域 - 最右侧 */
+.nav-section {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* 导航项容器 - 用于下拉菜单 */
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 导航链接通用样式 */
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* 注册和登录悬停变红效果 */
+.nav-link.no-dropdown:hover {
+    color: #e53935;
+}
+
+/* 其他导航链接悬停变红 */
+.nav-item.has-dropdown .nav-link:hover {
+    color: #e53935;
+}
+
+/* 分隔符 */
+.nav-divider {
+    color: #ddd;
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+/* 下拉菜单容器 */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 140px; /* 增加最小宽度 */
+    background-color: #fff;
+    border: 1px solid #e8e8e8;
+    border-top: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* 增强阴影 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 10px 0; /* 增加padding */
+    list-style: none;
+    margin: 0;
+    max-height: none; /* 不限制高度 */
+}
+
+/* 下拉菜单项 */
+.dropdown-menu a {
+    display: block;
+    padding: 10px 16px; /* 增加padding */
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 下拉菜单项悬停效果 */
+.dropdown-menu a:hover {
+    background-color: #f5f5f5;
+    color: #e53935;
+}
+
+/* 鼠标悬停导航项时显示下拉菜单 */
+.nav-item.has-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* 确保下拉菜单在悬停时保持显示 */
+.nav-item.has-dropdown:hover {
+    background-color: #fff;
+}
+
+/* 搜索栏区域 */
+.search-section {
+    padding: 15px 20px;
+    background: linear-gradient(to right, #ffeeee 0%, #ffcccc 50%, #ffeeee 100%);
+    display: flex;
+    justify-content: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    border: 2px solid #e53935;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #e53935;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #c41e3a;
+}
+
+/* 响应式设计 - 小屏幕适配 */
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .nav-section {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .nav-link {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    
+    .nav-divider {
+        display: none;
+    }
+    
+    .dropdown-menu {
+        left: 0;
+        right: auto;
+    }
+}
+
+/* 跨浏览器兼容性处理 */
+.nav-link,
+.dropdown-menu a {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+/* 清除默认样式 */
+.nav-section ul,
+.nav-section li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ==================== 弹窗样式 ==================== */
+
+/* 弹窗遮罩层 */
+.modal-overlay {
+    display: none; /* 默认隐藏 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px); /* 背景模糊效果 */
+}
+
+.modal-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* 弹窗内容容器 */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: linear-gradient(135deg, #71dff2 0%, #88e6f1 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    width: 90%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border: 1px solid rgb(9, 252, 244);
+}
+
+.modal-overlay.active .modal-content {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* 弹窗头部 */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 关闭按钮 */
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 32px;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #e53935;
+}
+
+/* 表单样式 */
+.modal-form {
+    padding: 24px;
+}
+
+/* 表单组 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e8e8e8;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #e53935;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
+}
+
+/* 表单行（验证码等） */
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.form-row label {
+    white-space: nowrap;
+}
+
+/* 验证码样式 */
+.captcha-code {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    border-radius: 4px;
+    user-select: none;
+    cursor: pointer;
+}
+
+/* 忘记密码链接 */
+.forgot-password {
+    color: #e53935;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* 复选框标签 */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.checkbox-label a {
+    color: #e53935;
+    text-decoration: none;
+}
+
+.checkbox-label a:hover {
+    text-decoration: underline;
+}
+
+/* 提交按钮 */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #e53935 0%, #c41e3a 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #c41e3a 0%, #a11530 100%);
+    box-shadow: 0 6px 16px rgba(229, 57, 53, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-submit:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(229, 57, 53, 0.3);
+}
+
+/* 响应式设计 - 弹窗适配 */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 20px;
+    }
+    
+    .modal-header {
+        padding: 16px 20px;
+    }
+    
+    .modal-form {
+        padding: 20px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    
+    .captcha-code {
+        text-align: center;
+    }
+}

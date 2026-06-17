@@ -1,0 +1,737 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全中心</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 返回导航 */
+        .back-nav {
+            margin-bottom: 20px;
+        }
+        
+        .back-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .back-nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 页面标题 */
+        .page-header {
+            background: white;
+            padding: 30px;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-header h1 {
+            font-size: 24px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .page-header h1 i {
+            color: #667eea;
+        }
+        
+        /* 内容区域 */
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 安全项卡片 */
+        .security-item {
+            display: flex;
+            align-items: center;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        
+        .security-item:hover {
+            background: #f0f2f5;
+            transform: translateX(4px);
+        }
+        
+        .security-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .security-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        }
+        
+        .security-icon i {
+            font-size: 22px;
+            color: white;
+        }
+        
+        .security-info {
+            flex: 1;
+        }
+        
+        .security-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        
+        .security-desc {
+            font-size: 13px;
+            color: #888;
+        }
+        
+        .security-value {
+            font-size: 14px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .security-value .hidden {
+            color: #999;
+        }
+        
+        .security-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-set {
+            background: #e6f7e6;
+            color: #52c41a;
+        }
+        
+        .status-not-set {
+            background: #fff7e6;
+            color: #fa8c16;
+        }
+        
+        .security-action {
+            margin-left: 20px;
+        }
+        
+        .btn-edit {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-edit:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* 弹窗样式 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 20px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 18px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 6px;
+        }
+        
+        .modal-footer {
+            padding: 16px 24px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-cancel {
+            background: white;
+            border: 1px solid #d9d9d9;
+            color: #666;
+        }
+        
+        .btn-cancel:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+        }
+        
+        .btn-save:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Toast提示 */
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 16px 24px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .toast.success {
+            background: #52c41a;
+        }
+        
+        .toast.error {
+            background: #ff4d4f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 返回导航 -->
+        <div class="back-nav">
+            <a href="index.html">
+                <i class="fas fa-arrow-left"></i>
+                返回首页
+            </a>
+        </div>
+        
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-shield-alt"></i>
+                安全中心
+            </h1>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content">
+            <!-- 用户名 -->
+            <div class="security-item">
+                <div class="security-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="security-info">
+                    <div class="security-title">用户名</div>
+                    <div class="security-value" id="usernameValue">-</div>
+                </div>
+                <div class="security-status status-set">
+                    <i class="fas fa-check-circle"></i> 已设置
+                </div>
+                <div class="security-action">
+                    <button class="btn-edit" onclick="openModal('username')">
+                        <i class="fas fa-edit"></i> 修改
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 登录密码 -->
+            <div class="security-item">
+                <div class="security-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="security-info">
+                    <div class="security-title">登录密码</div>
+                    <div class="security-value">
+                        <span class="hidden">********</span>
+                    </div>
+                </div>
+                <div class="security-status status-set">
+                    <i class="fas fa-check-circle"></i> 已设置
+                </div>
+                <div class="security-action">
+                    <button class="btn-edit" onclick="openModal('password')">
+                        <i class="fas fa-edit"></i> 修改
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 手机号 -->
+            <div class="security-item">
+                <div class="security-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="security-info">
+                    <div class="security-title">手机号</div>
+                    <div class="security-value" id="phoneValue">-</div>
+                </div>
+                <div class="security-status" id="phoneStatus">
+                    <i class="fas fa-exclamation-circle"></i> 未绑定
+                </div>
+                <div class="security-action">
+                    <button class="btn-edit" onclick="openModal('phone')">
+                        <i class="fas fa-edit"></i> 修改
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 支付密码 -->
+            <div class="security-item">
+                <div class="security-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <div class="security-info">
+                    <div class="security-title">支付密码</div>
+                    <div class="security-value" id="payPasswordValue">-</div>
+                </div>
+                <div class="security-status" id="payPasswordStatus">
+                    <i class="fas fa-exclamation-circle"></i> 未设置
+                </div>
+                <div class="security-action">
+                    <button class="btn-edit" onclick="openModal('payPassword')">
+                        <i class="fas fa-edit"></i> 修改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 修改弹窗 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">修改</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal()">取消</button>
+                <button class="btn btn-save" onclick="saveChanges()">保存</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 当前操作用户
+        let currentUser = null;
+        let currentEditType = '';
+        
+        // 获取当前登录用户
+        function getCurrentUser() {
+            const userId = localStorage.getItem('user_id');
+            const username = localStorage.getItem('username');
+            
+            if (!userId && !username) {
+                return null;
+            }
+            
+            // 从用户列表中查找
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            let user = users.find(u => u.id === userId || u.username === username);
+            
+            // 如果没找到，尝试用username匹配
+            if (!user && username) {
+                user = users.find(u => u.username === username);
+            }
+            
+            return user;
+        }
+        
+        // 初始化页面
+        function init() {
+            currentUser = getCurrentUser();
+            
+            if (!currentUser) {
+                alert('请先登录');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 显示用户信息
+            document.getElementById('usernameValue').textContent = currentUser.username || '-';
+            
+            // 显示手机号
+            const phoneEl = document.getElementById('phoneValue');
+            const phoneStatusEl = document.getElementById('phoneStatus');
+            if (currentUser.phone) {
+                const maskedPhone = currentUser.phone.substring(0, 3) + '****' + currentUser.phone.substring(7);
+                phoneEl.textContent = maskedPhone;
+                phoneStatusEl.className = 'security-status status-set';
+                phoneStatusEl.innerHTML = '<i class="fas fa-check-circle"></i> 已绑定';
+            } else {
+                phoneEl.textContent = '未绑定手机号';
+                phoneStatusEl.className = 'security-status status-not-set';
+                phoneStatusEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 未绑定';
+            }
+            
+            // 显示支付密码状态
+            const payPasswordEl = document.getElementById('payPasswordValue');
+            const payPasswordStatusEl = document.getElementById('payPasswordStatus');
+            if (currentUser.payPassword) {
+                payPasswordEl.textContent = '已设置（6位数字）';
+                payPasswordStatusEl.className = 'security-status status-set';
+                payPasswordStatusEl.innerHTML = '<i class="fas fa-check-circle"></i> 已设置';
+            } else {
+                payPasswordEl.textContent = '未设置支付密码';
+                payPasswordStatusEl.className = 'security-status status-not-set';
+                payPasswordStatusEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> 未设置';
+            }
+        }
+        
+        // 打开弹窗
+        function openModal(type) {
+            currentEditType = type;
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            switch(type) {
+                case 'username':
+                    modalTitle.textContent = '修改用户名';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label>当前用户名</label>
+                            <input type="text" id="editUsername" value="${currentUser.username || ''}" readonly style="background: #f5f5f5;">
+                        </div>
+                        <div class="form-group">
+                            <label>新用户名</label>
+                            <input type="text" id="newUsername" placeholder="请输入新用户名（6-20位）">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'password':
+                    modalTitle.textContent = '修改登录密码';
+                    modalBody.innerHTML = `
+                        <div class="form-group">
+                            <label>当前密码</label>
+                            <input type="password" id="currentPassword" placeholder="请输入当前密码">
+                        </div>
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" id="newPassword" placeholder="请输入新密码（6位以上）">
+                        </div>
+                        <div class="form-group">
+                            <label>确认新密码</label>
+                            <input type="password" id="confirmPassword" placeholder="请再次输入新密码">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'phone':
+                    modalTitle.textContent = currentUser.phone ? '修改手机号' : '绑定手机号';
+                    modalBody.innerHTML = `
+                        ${currentUser.phone ? `
+                        <div class="form-group">
+                            <label>当前手机号</label>
+                            <input type="text" value="${currentUser.phone.substring(0, 3)}****${currentUser.phone.substring(7)}" readonly style="background: #f5f5f5;">
+                        </div>
+                        ` : ''}
+                        <div class="form-group">
+                            <label>新手机号</label>
+                            <input type="tel" id="newPhone" placeholder="请输入新手机号" maxlength="11">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'payPassword':
+                    const isSet = currentUser.payPassword ? true : false;
+                    modalTitle.textContent = isSet ? '修改支付密码' : '设置支付密码';
+                    modalBody.innerHTML = `
+                        ${isSet ? `
+                        <div class="form-group">
+                            <label>当前支付密码</label>
+                            <input type="password" id="currentPayPassword" placeholder="请输入当前支付密码" maxlength="6">
+                        </div>
+                        ` : ''}
+                        <div class="form-group">
+                            <label>新支付密码</label>
+                            <input type="password" id="newPayPassword" placeholder="请输入6位数字支付密码" maxlength="6">
+                            <div class="hint">支付密码必须为6位数字</div>
+                        </div>
+                        <div class="form-group">
+                            <label>确认支付密码</label>
+                            <input type="password" id="confirmPayPassword" placeholder="请再次输入支付密码" maxlength="6">
+                        </div>
+                    `;
+                    break;
+            }
+            
+            modalOverlay.classList.add('active');
+        }
+        
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            currentEditType = '';
+        }
+        
+        // 显示提示
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+        
+        // 保存修改
+        function saveChanges() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex === -1) {
+                showToast('用户不存在', 'error');
+                return;
+            }
+            
+            let hasError = false;
+            
+            switch(currentEditType) {
+                case 'username':
+                    const newUsername = document.getElementById('newUsername').value.trim();
+                    if (!newUsername) {
+                        showToast('请输入新用户名', 'error');
+                        return;
+                    }
+                    if (newUsername.length < 6 || newUsername.length > 20) {
+                        showToast('用户名长度必须在6-20位之间', 'error');
+                        return;
+                    }
+                    if (users.some(u => u.username === newUsername && u.id !== currentUser.id)) {
+                        showToast('用户名已存在', 'error');
+                        return;
+                    }
+                    users[userIndex].username = newUsername;
+                    localStorage.setItem('username', newUsername);
+                    document.getElementById('usernameValue').textContent = newUsername;
+                    break;
+                    
+                case 'password':
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (currentPassword !== currentUser.password) {
+                        showToast('当前密码不正确', 'error');
+                        return;
+                    }
+                    if (newPassword.length < 6) {
+                        showToast('新密码长度必须大于6位', 'error');
+                        return;
+                    }
+                    if (newPassword !== confirmPassword) {
+                        showToast('两次输入的密码不一致', 'error');
+                        return;
+                    }
+                    users[userIndex].password = newPassword;
+                    break;
+                    
+                case 'phone':
+                    const newPhone = document.getElementById('newPhone').value.trim();
+                    if (!/^1[3-9]\d{9}$/.test(newPhone)) {
+                        showToast('请输入正确的手机号', 'error');
+                        return;
+                    }
+                    if (users.some(u => u.phone === newPhone && u.id !== currentUser.id)) {
+                        showToast('手机号已被绑定', 'error');
+                        return;
+                    }
+                    users[userIndex].phone = newPhone;
+                    const maskedPhone = newPhone.substring(0, 3) + '****' + newPhone.substring(7);
+                    document.getElementById('phoneValue').textContent = maskedPhone;
+                    document.getElementById('phoneStatus').className = 'security-status status-set';
+                    document.getElementById('phoneStatus').innerHTML = '<i class="fas fa-check-circle"></i> 已绑定';
+                    break;
+                    
+                case 'payPassword':
+                    const currentPayPassword = document.getElementById('currentPayPassword')?.value;
+                    const newPayPassword = document.getElementById('newPayPassword').value;
+                    const confirmPayPassword = document.getElementById('confirmPayPassword').value;
+                    
+                    if (currentUser.payPassword && currentPayPassword !== currentUser.payPassword) {
+                        showToast('当前支付密码不正确', 'error');
+                        return;
+                    }
+                    if (!/^\d{6}$/.test(newPayPassword)) {
+                        showToast('支付密码必须为6位数字', 'error');
+                        return;
+                    }
+                    if (newPayPassword !== confirmPayPassword) {
+                        showToast('两次输入的支付密码不一致', 'error');
+                        return;
+                    }
+                    users[userIndex].payPassword = newPayPassword;
+                    document.getElementById('payPasswordValue').textContent = '已设置（6位数字）';
+                    document.getElementById('payPasswordStatus').className = 'security-status status-set';
+                    document.getElementById('payPasswordStatus').innerHTML = '<i class="fas fa-check-circle"></i> 已设置';
+                    break;
+            }
+            
+            localStorage.setItem('users', JSON.stringify(users));
+            currentUser = users[userIndex];
+            showToast('修改成功', 'success');
+            closeModal();
+        }
+        
+        // 点击遮罩关闭
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // 初始化
+        init();
+    </script>
+</body>
+</html>
+

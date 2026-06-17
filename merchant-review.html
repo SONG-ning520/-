@@ -1,0 +1,863 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家入驻审核</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 统计卡片 */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+        }
+
+        .stat-icon.total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-icon.pending {
+            background: linear-gradient(135deg, #faad14 0%, #fa8c16 100%);
+        }
+
+        .stat-icon.approved {
+            background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+        }
+
+        .stat-icon.rejected {
+            background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+        }
+
+        .stat-info h3 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* 内容区域 */
+        .content-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 40px;
+        }
+
+        /* 标签页 */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            font-size: 15px;
+            color: #666;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 500;
+        }
+
+        .tab .badge {
+            background-color: #f0f0f0;
+            color: #666;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .tab.active .badge {
+            background-color: #667eea;
+            color: white;
+        }
+
+        /* 表格 */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #fafafa;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e8e8e8;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        .merchant-id {
+            font-family: monospace;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fffbe6;
+            color: #faad14;
+            border: 1px solid #ffe58f;
+        }
+
+        .status-approved {
+            background-color: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+
+        .status-rejected {
+            background-color: #fff2f0;
+            color: #ff4d4f;
+            border: 1px solid #ffccc7;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            margin-right: 8px;
+        }
+
+        .action-btn.approve {
+            background-color: #52c41a;
+            color: white;
+        }
+
+        .action-btn.approve:hover {
+            background-color: #389e0d;
+        }
+
+        .action-btn.reject {
+            background-color: #ff4d4f;
+            color: white;
+        }
+
+        .action-btn.reject:hover {
+            background-color: #cf1322;
+        }
+
+        .action-btn.view {
+            background-color: #1890ff;
+            color: white;
+        }
+
+        .action-btn.view:hover {
+            background-color: #096dd9;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* 审核弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .modal-body p {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .modal-body textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.cancel {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+
+        .modal-btn.cancel:hover {
+            background-color: #e8e8e8;
+        }
+
+        .modal-btn.confirm-approve {
+            background-color: #52c41a;
+            color: white;
+        }
+
+        .modal-btn.confirm-approve:hover {
+            background-color: #389e0d;
+        }
+
+        .modal-btn.confirm-reject {
+            background-color: #ff4d4f;
+            color: white;
+        }
+
+        .modal-btn.confirm-reject:hover {
+            background-color: #cf1322;
+        }
+
+        /* 提示框 */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #f6ffed;
+            border: 1px solid #b7eb8f;
+            color: #52c41a;
+        }
+
+        .alert-error {
+            background-color: #fff2f0;
+            border: 1px solid #ffccc7;
+            color: #ff4d4f;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: white;
+            color: #667eea;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> 返回首页
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-clipboard-check"></i> 商家入驻审核</h1>
+            <p>管理商家入驻申请，确保平台商家质量</p>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-container" id="statsContainer">
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statTotal">0</h3>
+                    <p>总申请数</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon pending">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statPending">0</h3>
+                    <p>待审核</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon approved">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statApproved">0</h3>
+                    <p>已通过</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon rejected">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="statRejected">0</h3>
+                    <p>已拒绝</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="content-container">
+            <!-- 提示框 -->
+            <div id="alertBox" class="alert"></div>
+
+            <!-- 标签页 -->
+            <div class="tabs">
+                <div class="tab active" data-tab="pending">
+                    <i class="fas fa-clock"></i> 待审核
+                    <span class="badge" id="pendingCount">0</span>
+                </div>
+                <div class="tab" data-tab="approved">
+                    <i class="fas fa-check-circle"></i> 已通过
+                    <span class="badge" id="approvedCount">0</span>
+                </div>
+                <div class="tab" data-tab="rejected">
+                    <i class="fas fa-times-circle"></i> 已拒绝
+                    <span class="badge" id="rejectedCount">0</span>
+                </div>
+                <div class="tab" data-tab="all">
+                    <i class="fas fa-list"></i> 全部
+                    <span class="badge" id="allCount">0</span>
+                </div>
+            </div>
+
+            <!-- 表格 -->
+            <div class="table-container">
+                <table id="merchantTable">
+                    <thead>
+                        <tr>
+                            <th>商家ID</th>
+                            <th>用户名</th>
+                            <th>店铺名称</th>
+                            <th>店铺类型</th>
+                            <th>手机号</th>
+                            <th>申请时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="merchantTableBody">
+                        <!-- 数据将通过JavaScript动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 空状态 -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <h3>暂无数据</h3>
+                <p>当前没有待审核的商家入驻申请</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核弹窗 -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">审核商家入驻申请</h3>
+                <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="merchantInfo"></p>
+                <label for="reviewNote">审核备注（可选）：</label>
+                <textarea id="reviewNote" placeholder="请输入审核备注..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel" onclick="closeReviewModal()">取消</button>
+                <button class="modal-btn confirm-reject" id="rejectBtn" onclick="confirmReject()">
+                    <i class="fas fa-times"></i> 拒绝
+                </button>
+                <button class="modal-btn confirm-approve" id="approveBtn" onclick="confirmApprove()">
+                    <i class="fas fa-check"></i> 通过
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/merchant-store.js"></script>
+    <script>
+        // 当前选中的标签和商家ID
+        let currentTab = 'pending';
+        let selectedMerchantId = null;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStatistics();
+            loadMerchants();
+            initTabs();
+        });
+
+        // 初始化标签页
+        function initTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 更新标签样式
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 加载对应数据
+                    currentTab = this.dataset.tab;
+                    loadMerchants();
+                });
+            });
+        }
+
+        // 加载统计数据
+        function loadStatistics() {
+            const stats = merchantStore.getStatistics();
+            document.getElementById('statTotal').textContent = stats.total;
+            document.getElementById('statPending').textContent = stats.pending;
+            document.getElementById('statApproved').textContent = stats.approved;
+            document.getElementById('statRejected').textContent = stats.rejected;
+            
+            document.getElementById('pendingCount').textContent = stats.pending;
+            document.getElementById('approvedCount').textContent = stats.approved;
+            document.getElementById('rejectedCount').textContent = stats.rejected;
+            document.getElementById('allCount').textContent = stats.total;
+        }
+
+        // 加载商家列表
+        function loadMerchants() {
+            let merchants = [];
+            
+            switch (currentTab) {
+                case 'pending':
+                    merchants = merchantStore.getPendingMerchants();
+                    break;
+                case 'approved':
+                    merchants = merchantStore.getApprovedMerchants();
+                    break;
+                case 'rejected':
+                    merchants = merchantStore.getReviewedMerchants().filter(m => m.status === 'rejected');
+                    break;
+                case 'all':
+                    merchants = merchantStore.getAllMerchants();
+                    break;
+            }
+
+            renderTable(merchants);
+        }
+
+        // 渲染表格
+        function renderTable(merchants) {
+            const tbody = document.getElementById('merchantTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const table = document.getElementById('merchantTable');
+
+            if (merchants.length === 0) {
+                tbody.innerHTML = '';
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = merchants.map(merchant => `
+                <tr>
+                    <td><span class="merchant-id">${merchant.id}</span></td>
+                    <td>${merchant.username}</td>
+                    <td>${merchant.storeName}</td>
+                    <td>${merchant.storeType}</td>
+                    <td>${merchant.phone}</td>
+                    <td>${formatDate(merchant.createdAt)}</td>
+                    <td>
+                        <span class="status-badge status-${merchant.status}">
+                            ${getStatusText(merchant.status)}
+                        </span>
+                    </td>
+                    <td>
+                        ${merchant.status === 'pending' ? `
+                            <button class="action-btn approve" onclick="openReviewModal('${merchant.id}', 'approve')">
+                                <i class="fas fa-check"></i> 通过
+                            </button>
+                            <button class="action-btn reject" onclick="openReviewModal('${merchant.id}', 'reject')">
+                                <i class="fas fa-times"></i> 拒绝
+                            </button>
+                        ` : `
+                            <button class="action-btn view" onclick="viewMerchant('${merchant.id}')">
+                                <i class="fas fa-eye"></i> 查看
+                            </button>
+                        `}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 格式化日期
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': '待审核',
+                'approved': '已通过',
+                'rejected': '已拒绝'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 打开审核弹窗
+        function openReviewModal(merchantId, action) {
+            selectedMerchantId = merchantId;
+            const merchant = merchantStore.getMerchantById(merchantId);
+            
+            if (!merchant) {
+                showAlert('error', '商家信息不存在');
+                return;
+            }
+
+            document.getElementById('merchantInfo').textContent = 
+                `商家：${merchant.username} (${merchant.storeName})`;
+            
+            document.getElementById('modalTitle').textContent = 
+                action === 'approve' ? '通过商家入驻申请' : '拒绝商家入驻申请';
+            
+            document.getElementById('approveBtn').style.display = 
+                action === 'approve' ? 'inline-block' : 'none';
+            
+            document.getElementById('rejectBtn').style.display = 
+                action === 'reject' ? 'inline-block' : 'none';
+            
+            document.getElementById('reviewModal').classList.add('active');
+        }
+
+        // 关闭审核弹窗
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+            document.getElementById('reviewNote').value = '';
+            selectedMerchantId = null;
+        }
+
+        // 确认通过
+        function confirmApprove() {
+            if (!selectedMerchantId) return;
+
+            const reviewNote = document.getElementById('reviewNote').value;
+            const result = merchantStore.reviewApplication(
+                selectedMerchantId, 
+                'approved', 
+                reviewNote, 
+                '管理员'
+            );
+
+            if (result.success) {
+                showAlert('success', '商家入驻申请已通过！');
+                
+                // 如果是已通过的商家，更新store_info
+                if (result.data.username === JSON.parse(localStorage.getItem('store_info') || '{}').username) {
+                    localStorage.setItem('store_info', JSON.stringify({
+                        id: result.data.id,
+                        username: result.data.username,
+                        phone: result.data.phone,
+                        storeName: result.data.storeName,
+                        storeType: result.data.storeType,
+                        status: result.data.status
+                    }));
+                }
+                
+                closeReviewModal();
+                loadStatistics();
+                loadMerchants();
+            } else {
+                showAlert('error', result.message);
+            }
+        }
+
+        // 确认拒绝
+        function confirmReject() {
+            if (!selectedMerchantId) return;
+
+            const reviewNote = document.getElementById('reviewNote').value;
+            const result = merchantStore.reviewApplication(
+                selectedMerchantId, 
+                'rejected', 
+                reviewNote, 
+                '管理员'
+            );
+
+            if (result.success) {
+                showAlert('success', '商家入驻申请已拒绝');
+                closeReviewModal();
+                loadStatistics();
+                loadMerchants();
+            } else {
+                showAlert('error', result.message);
+            }
+        }
+
+        // 查看商家详情
+        function viewMerchant(merchantId) {
+            const merchant = merchantStore.getMerchantById(merchantId);
+            if (!merchant) {
+                showAlert('error', '商家信息不存在');
+                return;
+            }
+
+            const info = `
+商家ID：${merchant.id}
+用户名：${merchant.username}
+店铺名称：${merchant.storeName}
+店铺类型：${merchant.storeType}
+手机号：${merchant.phone}
+${merchant.businessLicense ? '营业执照号：' + merchant.businessLicense : ''}
+${merchant.idCard ? '身份证号：' + merchant.idCard : ''}
+申请时间：${formatDate(merchant.createdAt)}
+审核状态：${getStatusText(merchant.status)}
+${merchant.reviewedAt ? '审核时间：' + formatDate(merchant.reviewedAt) : ''}
+${merchant.reviewer ? '审核人：' + merchant.reviewer : ''}
+${merchant.reviewNote ? '审核备注：' + merchant.reviewNote : ''}
+            `.trim();
+
+            alert(info);
+        }
+
+        // 显示提示框
+        function showAlert(type, message) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert alert-' + type;
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+

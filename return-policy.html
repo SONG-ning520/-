@@ -1,0 +1,637 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>退换政策 - 电商平台</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to right, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+        }
+
+        .top-frame-container {
+            width: 100%;
+            position: relative;
+            z-index: 100;
+        }
+
+        #topFrame {
+            width: 100%;
+            height: 280px;
+            border: none;
+            display: block;
+            overflow: visible;
+        }
+
+        .return-policy-page {
+            max-width: 900px;
+            margin: -100px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 50;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #ff6b6b;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            margin: 0 8px;
+        }
+
+        .breadcrumb .current {
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .policy-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .policy-section {
+            margin-bottom: 36px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .policy-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .policy-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .policy-section-header .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .policy-section-header .icon-box.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        }
+
+        .policy-section-header .icon-box.green {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        }
+
+        .policy-section-header .icon-box.orange {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+        }
+
+        .policy-section-header .icon-box.red {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+
+        .policy-section-header .icon-box.purple {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+        }
+
+        .policy-section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .policy-section-header p {
+            font-size: 14px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .policy-section .content {
+            color: #666;
+            line-height: 1.9;
+            font-size: 15px;
+        }
+
+        .policy-section .content p {
+            margin-bottom: 12px;
+        }
+
+        .policy-section .content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-section .content strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .policy-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .policy-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        .policy-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b82f6;
+        }
+
+        .policy-list li.important::before {
+            background: #ef4444;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #10b981;
+        }
+
+        .timeline-item .step-number {
+            position: absolute;
+            left: -31px;
+            top: 6px;
+            font-size: 10px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .timeline-item .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .timeline-item .step-desc {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #f59e0b;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+
+        .highlight-box p {
+            color: #92400e;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .important-note {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid #ef4444;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+
+        .important-note p {
+            color: #991b1b;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .policy-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .policy-table th,
+        .policy-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .policy-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .policy-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .policy-table .highlight {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .policy-table .warning {
+            color: #f59e0b;
+            font-weight: 500;
+        }
+
+        .policy-table .error {
+            color: #ef4444;
+            font-weight: 500;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            border-radius: 12px;
+            padding: 24px;
+            color: #fff;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .contact-info p {
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .contact-info .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-info .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-info .contact-method i {
+            font-size: 18px;
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .back-home-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-home-btn i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .policy-content {
+                padding: 20px;
+            }
+
+            .policy-section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .contact-info .contact-methods {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-frame-container">
+        <iframe id="topFrame" src="../top.html"></iframe>
+    </div>
+
+    <div class="return-policy-page">
+        <div class="breadcrumb">
+            <a href="../index.html">首页</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <a href="help-center.html">客户服务</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span class="current">退换货政策</span>
+        </div>
+
+        <div class="page-header">
+            <h1><i class="fas fa-undo"></i> 退换货政策</h1>
+            <p>了解我们的退换货规则，保障您的购物权益</p>
+        </div>
+
+        <div class="policy-content">
+            <div class="policy-section">
+                <div class="policy-section-header">
+                    <div class="icon-box blue">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <h2>退换货条件</h2>
+                        <p>了解您是否符合退换货要求</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <p>在您收到商品之日起<strong>7天内</strong>，如符合以下条件，您可以申请退换货：</p>
+                    <ul class="policy-list">
+                        <li>商品完好无损，包装完整，未拆封使用（部分特殊商品除外）</li>
+                        <li>商品标签、吊牌、说明书等配件齐全</li>
+                        <li>提供完整的订单信息和发票（如有）</li>
+                        <li>非因人为损坏或不当使用导致的质量问题</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p><i class="fas fa-info-circle"></i> 温馨提示：某些特殊商品（如食品、化妆品、贴身用品等）不支持无理由退换，请在购买前仔细阅读商品详情页说明。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-section-header">
+                    <div class="icon-box green">
+                        <i class="fas fa-list-ol"></i>
+                    </div>
+                    <div>
+                        <h2>退换货流程</h2>
+                        <p>简单四步，轻松完成退换货</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="step-number">1</span>
+                            <div class="step-title">申请退换货</div>
+                            <div class="step-desc">在订单详情页点击"申请退换货"，选择退换货原因并填写相关信息。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="step-number">2</span>
+                            <div class="step-title">审核通过</div>
+                            <div class="step-desc">客服会在<strong>24小时内</strong>审核您的申请，请保持手机畅通。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="step-number">3</span>
+                            <div class="step-title">寄回商品</div>
+                            <div class="step-desc">审核通过后，请在<strong>7天内</strong>将商品寄回指定地址。</div>
+                        </div>
+                        <div class="timeline-item">
+                            <span class="step-number">4</span>
+                            <div class="step-title">完成处理</div>
+                            <div class="step-desc">商家收到退货后会在<strong>3个工作日内</strong>完成退款或换货处理。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-section-header">
+                    <div class="icon-box orange">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h2>时效规定</h2>
+                        <p>重要时间节点，请勿错过</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="table-wrapper">
+                        <table class="policy-table">
+                            <thead>
+                                <tr>
+                                    <th>事项</th>
+                                    <th>时效要求</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>申请退换货</td>
+                                    <td class="highlight">7天</td>
+                                    <td>自收到商品之日起7日内</td>
+                                </tr>
+                                <tr>
+                                    <td>审核时间</td>
+                                    <td class="highlight">24小时</td>
+                                    <td>工作日内24小时完成审核</td>
+                                </tr>
+                                <tr>
+                                    <td>寄回商品</td>
+                                    <td class="warning">7天</td>
+                                    <td>审核通过后7日内寄回</td>
+                                </tr>
+                                <tr>
+                                    <td>退款处理</td>
+                                    <td class="highlight">3个工作日</td>
+                                    <td>收到退货后3个工作日内</td>
+                                </tr>
+                                <tr>
+                                    <td>换货处理</td>
+                                    <td class="highlight">5个工作日</td>
+                                    <td>收到退货后5个工作日内寄出</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-section-header">
+                    <div class="icon-box red">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div>
+                        <h2>不予退换货情形</h2>
+                        <p>以下情况不支持退换货</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <ul class="policy-list">
+                        <li class="important">超过7天退换货期限的商品</li>
+                        <li class="important">商品已拆封使用、损坏或丢失配件的</li>
+                        <li class="important">因人为原因或不当使用造成损坏的</li>
+                        <li class="important">食品、化妆品、贴身用品等特殊商品（除质量问题外）</li>
+                        <li class="important">定制商品或已使用优惠券、积分抵扣的商品（除质量问题外）</li>
+                        <li class="important">无订单信息或发票的商品</li>
+                    </ul>
+                    <div class="important-note">
+                        <p><i class="fas fa-exclamation-triangle"></i> 如商品存在质量问题，请在收到商品后及时联系客服，我们将为您提供免费退换货服务。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-section-header">
+                    <div class="icon-box purple">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div>
+                        <h2>退款说明</h2>
+                        <p>了解退款方式和到账时间</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <ul class="policy-list">
+                        <li><strong>退款方式：</strong>原路退回，即按照您原支付方式退回</li>
+                        <li><strong>到账时间：</strong>
+                            <ul style="margin-top: 8px; padding-left: 20px;">
+                                <li>微信支付/支付宝：1-3个工作日</li>
+                                <li>银行卡支付：3-7个工作日</li>
+                                <li>优惠券/积分：即时退回账户</li>
+                            </ul>
+                        </li>
+                        <li><strong>退款金额：</strong>退回商品实际支付金额，不含运费（质量问题除外）</li>
+                        <li><strong>运费说明：</strong>非质量问题的退换货，运费由买家承担；质量问题的退换货，运费由卖家承担</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <h3><i class="fas fa-headset"></i> 有疑问？联系我们</h3>
+                <p>如果您对退换货政策有任何疑问，欢迎联系我们的客服团队</p>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <i class="fas fa-phone"></i>
+                        <span>客服热线：400-123-4567</span>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-envelope"></i>
+                        <span>邮箱：service@example.com</span>
+                    </div>
+                    <div class="contact-method">
+                        <i class="fas fa-clock"></i>
+                        <span>服务时间：9:00-21:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-to-home">
+                <a href="../index.html" class="back-home-btn">
+                    <i class="fas fa-home"></i> 返回首页
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

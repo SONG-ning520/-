@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家入驻状态</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 50px;
+        }
+
+        /* 状态显示 */
+        .status-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .status-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 60px;
+        }
+
+        .status-icon.pending {
+            background: linear-gradient(135deg, #faad14 0%, #fa8c16 100%);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .status-icon.approved {
+            background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+            color: white;
+        }
+
+        .status-icon.rejected {
+            background: linear-gradient(135deg, #ff4d4f 0%, #cf1322 100%);
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .status-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .status-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* 信息卡片 */
+        .info-card {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-title i {
+            color: #667eea;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 576px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* 审核信息 */
+        .review-section {
+            background: #fff7e6;
+            border: 1px solid #ffd591;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .review-section.visible {
+            display: block;
+        }
+
+        .review-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fa8c16;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .review-item {
+            margin-bottom: 15px;
+        }
+
+        .review-label {
+            font-size: 13px;
+            color: #8c6d3f;
+            margin-bottom: 5px;
+        }
+
+        .review-value {
+            font-size: 15px;
+            color: #333;
+        }
+
+        /* 按钮 */
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8e8e8;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(82, 196, 26, 0.4);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 80px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-store-alt"></i> 商家入驻状态</h1>
+            <p>查看您的商家入驻申请状态</p>
+        </div>
+
+        <div class="content-container" id="contentContainer">
+            <!-- 内容将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <script src="/js/merchant-store.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStatus();
+        });
+
+        function renderStatus() {
+            const container = document.getElementById('contentContainer');
+            const storeInfo = localStorage.getItem('store_info');
+
+            // 检查是否已入驻
+            if (!storeInfo) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>暂无入驻信息</h3>
+                        <p>您还没有提交商家入驻申请</p>
+                        <a href="ruzhu-form.html" class="btn btn-primary">
+                            <i class="fas fa-arrow-right"></i> 立即入驻
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const merchant = JSON.parse(storeInfo);
+            const fullMerchant = merchantStore.getMerchantById(merchant.id);
+
+            // 根据状态渲染不同的UI
+            if (merchant.status === 'pending') {
+                renderPendingStatus(container, merchant);
+            } else if (merchant.status === 'approved') {
+                renderApprovedStatus(container, merchant);
+            } else if (merchant.status === 'rejected') {
+                renderRejectedStatus(container, fullMerchant);
+            }
+        }
+
+        function renderPendingStatus(container, merchant) {
+            container.innerHTML = `
+                <div class="status-section">
+                    <div class="status-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h2 class="status-title">审核中</h2>
+                    <p class="status-description">
+                        您的商家入驻申请正在审核中，请耐心等待。<br>
+                        审核结果将在1-3个工作日内通知您。
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-title">
+                        <i class="fas fa-info-circle"></i> 入驻信息
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">商家ID</span>
+                            <span class="info-value">${merchant.id}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">用户名</span>
+                            <span class="info-value">${merchant.username}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">店铺名称</span>
+                            <span class="info-value">${merchant.storeName}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">店铺类型</span>
+                            <span class="info-value">${merchant.storeType}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">手机号</span>
+                            <span class="info-value">${merchant.phone}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">入驻状态</span>
+                            <span class="info-value" style="color: #faad14;">待审核</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 返回首页
+                    </a>
+                </div>
+            `;
+        }
+
+        function renderApprovedStatus(container, merchant) {
+            container.innerHTML = `
+                <div class="status-section">
+                    <div class="status-icon approved">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="status-title">审核已通过</h2>
+                    <p class="status-description">
+                        恭喜！您的商家入驻申请已通过审核。<br>
+                        现在您可以访问商家后台，管理您的店铺和商品。
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-title">
+                        <i class="fas fa-info-circle"></i> 入驻信息
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">商家ID</span>
+                            <span class="info-value">${merchant.id}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">用户名</span>
+                            <span class="info-value">${merchant.username}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">店铺名称</span>
+                            <span class="info-value">${merchant.storeName}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">店铺类型</span>
+                            <span class="info-value">${merchant.storeType}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">手机号</span>
+                            <span class="info-value">${merchant.phone}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">入驻状态</span>
+                            <span class="info-value" style="color: #52c41a;">已通过</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 返回首页
+                    </a>
+                    <a href="merchant-login.html" class="btn btn-success">
+                        <i class="fas fa-tachometer-alt"></i> 进入商家后台
+                    </a>
+                </div>
+            `;
+        }
+
+        function renderRejectedStatus(container, merchant) {
+            if (!merchant) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>商家信息不存在</h3>
+                        <p>无法找到对应的商家信息</p>
+                        <a href="ruzhu-form.html" class="btn btn-primary">
+                            <i class="fas fa-arrow-right"></i> 重新入驻
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="status-section">
+                    <div class="status-icon rejected">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <h2 class="status-title">审核未通过</h2>
+                    <p class="status-description">
+                        很抱歉，您的商家入驻申请未通过审核。<br>
+                        请查看审核意见，如有疑问请联系客服。
+                    </p>
+                </div>
+
+                <div class="review-section visible">
+                    <div class="review-title">
+                        <i class="fas fa-comment-alt"></i> 审核意见
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">审核状态</div>
+                        <div class="review-value" style="color: #ff4d4f;">已拒绝</div>
+                    </div>
+                    ${merchant.reviewer ? `
+                    <div class="review-item">
+                        <div class="review-label">审核人</div>
+                        <div class="review-value">${merchant.reviewer}</div>
+                    </div>
+                    ` : ''}
+                    ${merchant.reviewedAt ? `
+                    <div class="review-item">
+                        <div class="review-label">审核时间</div>
+                        <div class="review-value">${formatDate(merchant.reviewedAt)}</div>
+                    </div>
+                    ` : ''}
+                    ${merchant.reviewNote ? `
+                    <div class="review-item">
+                        <div class="review-label">审核备注</div>
+                        <div class="review-value">${merchant.reviewNote}</div>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="info-card">
+                    <div class="info-title">
+                        <i class="fas fa-info-circle"></i> 入驻信息
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">商家ID</span>
+                            <span class="info-value">${merchant.id}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">用户名</span>
+                            <span class="info-value">${merchant.username}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">店铺名称</span>
+                            <span class="info-value">${merchant.storeName}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">店铺类型</span>
+                            <span class="info-value">${merchant.storeType}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">手机号</span>
+                            <span class="info-value">${merchant.phone}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">入驻状态</span>
+                            <span class="info-value" style="color: #ff4d4f;">已拒绝</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> 返回首页
+                    </a>
+                    <button class="btn btn-primary" onclick="reApply()">
+                        <i class="fas fa-redo"></i> 重新申请
+                    </button>
+                </div>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function reApply() {
+            if (confirm('确定要重新申请入驻吗？这将删除您之前的申请记录。')) {
+                const storeInfo = JSON.parse(localStorage.getItem('store_info'));
+                if (storeInfo) {
+                    merchantStore.deleteMerchant(storeInfo.id);
+                    localStorage.removeItem('store_info');
+                    window.location.href = 'ruzhu-form.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+

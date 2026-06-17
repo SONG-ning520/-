@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待收货订单</title>
+    <link rel="stylesheet" href="/css/orders.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="order-page">
+        <header class="page-header">
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>待收货</h1>
+            <div class="placeholder"></div>
+        </header>
+
+        <main class="page-content">
+            <div class="order-list" id="orderList"></div>
+            <div class="empty-state pending-receipt" id="emptyState">
+                <div class="empty-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h2>暂无待收货订单</h2>
+                <p>快递正在路上，很快就能收到心仪的商品啦~</p>
+                <button class="btn btn-primary" id="goShoppingBtn">继续购物</button>
+            </div>
+        </main>
+
+        <footer class="page-footer">
+            <nav class="nav-tabs">
+                <a href="order-pending-payment.html" class="nav-item">
+                    <i class="fas fa-clock"></i>
+                    <span>待付款</span>
+                </a>
+                <a href="order-pending-shipment.html" class="nav-item">
+                    <i class="fas fa-truck"></i>
+                    <span>待发货</span>
+                </a>
+                <a href="order-pending-receipt.html" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>待收货</span>
+                </a>
+                <a href="order-completed.html" class="nav-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>已完成</span>
+                </a>
+            </nav>
+        </footer>
+    </div>
+
+    <script src="/js/orderManagement.js"></script>
+    <script src="/js/order-pending-receipt.js"></script>
+</body>
+</html>
+

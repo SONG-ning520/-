@@ -1,0 +1,429 @@
+/* 支付弹窗样式 */
+.payment-modal-overlay,
+.address-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.payment-modal-overlay.active,
+.address-modal-overlay.active {
+    display: flex;
+}
+
+.payment-modal,
+.address-modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #f5f5f5;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: #eee;
+    color: #333;
+}
+
+/* 弹窗内容区域 */
+.modal-section {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 16px 0;
+    font-weight: 600;
+}
+
+.section-title i {
+    color: #ff6b6b;
+}
+
+/* 收货地址选择 */
+.address-selector {
+    min-height: 80px;
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+.address-selector.selected {
+    border-style: solid;
+    border-color: #ff6b6b;
+    background: #fff5f5;
+}
+
+.address-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    color: #999;
+}
+
+.address-placeholder i {
+    font-size: 24px;
+}
+
+.address-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.address-info .name-phone {
+    display: flex;
+    gap: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+.address-info .address-detail {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.address-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ff6b6b;
+    background: #fff;
+    color: #ff6b6b;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.address-btn:hover {
+    background: #fff5f5;
+}
+
+/* 支付方式选择 */
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.payment-method:hover {
+    border-color: #ff6b6b;
+    background: #fff5f5;
+}
+
+.payment-method.selected {
+    border-color: #ff6b6b;
+    background: #fff5f5;
+}
+
+.payment-method .method-icon {
+    width: 48px;
+    height: 48px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    margin-right: 16px;
+}
+
+.payment-method .method-name {
+    flex: 1;
+    font-weight: 500;
+    color: #333;
+}
+
+.payment-method .method-check {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.payment-method.selected .method-check {
+    background: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.payment-method.selected .method-check::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+/* 订单摘要 */
+.order-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.summary-row.label {
+    color: #666;
+}
+
+.summary-row.total {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ff6b6b;
+    padding-top: 12px;
+    border-top: 1px dashed #ddd;
+}
+
+.summary-row.total span:first-child {
+    color: #333;
+}
+
+.order-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.order-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.order-item .item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.order-item .item-name {
+    font-size: 14px;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.order-item .item-price {
+    font-size: 14px;
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+/* 操作按钮 */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+}
+
+.btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-secondary {
+    background: #ffc107;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #ffb300;
+}
+
+.btn-primary {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #c82333;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 地址选择弹窗 */
+.address-modal {
+    max-height: 70vh;
+}
+
+.address-list {
+    padding: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.address-item {
+    padding: 16px;
+    border: 2px solid #eee;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.address-item:hover {
+    border-color: #ff6b6b;
+}
+
+.address-item.selected {
+    border-color: #ff6b6b;
+    background: #fff5f5;
+}
+
+.address-item .address-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.address-item .address-header .name {
+    font-weight: 600;
+    color: #333;
+}
+
+.address-item .address-header .phone {
+    color: #666;
+    font-size: 14px;
+}
+
+.address-item .address-detail {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.address-item .is-default {
+    display: inline-block;
+    background: #ff6b6b;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+    .payment-modal,
+    .address-modal {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .modal-section {
+        padding: 16px;
+    }
+
+    .modal-actions {
+        padding: 16px;
+    }
+
+    .btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+}

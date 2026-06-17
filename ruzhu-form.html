@@ -1,0 +1,800 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家入驻申请</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 50px;
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .required::after {
+            content: ' *';
+            color: #ff4d4f;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control.error {
+            border-color: #ff4d4f;
+        }
+
+        .form-control.success {
+            border-color: #52c41a;
+        }
+
+        .error-message {
+            color: #ff4d4f;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8e8e8;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 提示框样式 */
+        .alert {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .alert-success {
+            background-color: #f6ffed;
+            border: 2px solid #52c41a;
+            color: #52c41a;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.8;
+            padding: 20px;
+            animation: successPulse 0.5s ease;
+        }
+        
+        @keyframes successPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+        
+        .alert-success i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .alert-error {
+            background-color: #fff2f0;
+            border: 1px solid #ffccc7;
+            color: #ff4d4f;
+        }
+
+        .alert-warning {
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            color: #faad14;
+        }
+
+        .tips {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .tips ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .tips li {
+            margin-bottom: 4px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 3px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+            font-weight: normal;
+            color: #666;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background-color: #e8e8e8;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .strength-bar.active.weak {
+            background-color: #ff4d4f;
+        }
+
+        .strength-bar.active.medium {
+            background-color: #faad14;
+        }
+
+        .strength-bar.active.strong {
+            background-color: #52c41a;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-store"></i> 商家入驻申请</h1>
+            <p>加入我们，开启您的电商之旅</p>
+        </div>
+
+        <div class="form-container">
+            <!-- 提示框 -->
+            <div id="alertSuccess" class="alert alert-success">
+                <i class="fas fa-check-circle"></i> <span></span>
+            </div>
+
+            <div id="alertError" class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i> <span></span>
+            </div>
+
+            <!-- 提示信息 -->
+            <div class="tips">
+                <div class="tips-title"><i class="fas fa-info-circle"></i> 入驻须知</div>
+                <ul>
+                    <li>请填写真实有效的商家信息，以便我们进行审核</li>
+                    <li>用户名和手机号具有唯一性，请勿重复注册</li>
+                    <li>密码至少6位，建议包含字母和数字</li>
+                    <li>审核结果将在1-3个工作日内通知您</li>
+                </ul>
+            </div>
+
+            <form id="merchantForm">
+                <!-- 账户信息 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i> 账户信息
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="required">用户名</label>
+                        <input type="text" id="username" name="username" class="form-control" 
+                               placeholder="请输入用户名（3-20位）" maxlength="20">
+                        <div class="error-message" id="usernameError">用户名至少需要3个字符</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password" class="required">密码</label>
+                            <input type="password" id="password" name="password" class="form-control" 
+                                   placeholder="请输入密码（至少6位）" maxlength="20">
+                            <div class="password-strength" id="passwordStrength">
+                                <div class="strength-bar"></div>
+                                <div class="strength-bar"></div>
+                                <div class="strength-bar"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText"></div>
+                            <div class="error-message" id="passwordError">密码至少需要6个字符</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword" class="required">确认密码</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" 
+                                   placeholder="请再次输入密码" maxlength="20">
+                            <div class="error-message" id="confirmPasswordError">两次密码输入不一致</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="required">手机号</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" 
+                               placeholder="请输入手机号（用于验证登录）" maxlength="11">
+                        <div class="error-message" id="phoneError">请输入正确的手机号</div>
+                    </div>
+                </div>
+
+                <!-- 店铺信息 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-store-alt"></i> 店铺信息
+                    </div>
+
+                    <div class="form-group">
+                        <label for="storeName" class="required">店铺名称</label>
+                        <input type="text" id="storeName" name="storeName" class="form-control" 
+                               placeholder="请输入店铺名称（2-30位）" maxlength="30">
+                        <div class="error-message" id="storeNameError">店铺名称至少需要2个字符</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="storeType" class="required">店铺类型</label>
+                        <select id="storeType" name="storeType" class="form-control">
+                            <option value="">请选择店铺类型</option>
+                            <option value="服装鞋包">服装鞋包</option>
+                            <option value="数码电子">数码电子</option>
+                            <option value="食品生鲜">食品生鲜</option>
+                            <option value="美妆护肤">美妆护肤</option>
+                            <option value="家居生活">家居生活</option>
+                            <option value="图书音像">图书音像</option>
+                            <option value="运动户外">运动户外</option>
+                            <option value="母婴用品">母婴用品</option>
+                            <option value="其他">其他</option>
+                        </select>
+                        <div class="error-message" id="storeTypeError">请选择店铺类型</div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="businessLicense">营业执照号（选填）</label>
+                            <input type="text" id="businessLicense" name="businessLicense" class="form-control" 
+                                   placeholder="请输入营业执照号" maxlength="20">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idCard">身份证号（选填）</label>
+                            <input type="text" id="idCard" name="idCard" class="form-control" 
+                                   placeholder="请输入身份证号" maxlength="18">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 协议同意 -->
+                <div class="form-section">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="agreement" name="agreement">
+                        <label for="agreement">
+                            我已阅读并同意<a href="#" style="color: #667eea;">《商家入驻协议》</a>和
+                            <a href="#" style="color: #667eea;">《平台服务条款》</a>
+                        </label>
+                    </div>
+                    <div class="error-message" id="agreementError">请阅读并同意相关协议</div>
+                </div>
+
+                <!-- 按钮 -->
+                <div class="btn-container">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-redo"></i> 重置
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> 提交申请
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/merchant-store.js"></script>
+    <script>
+        // 表单验证状态
+        const formState = {
+            username: false,
+            password: false,
+            confirmPassword: false,
+            phone: false,
+            storeName: false,
+            storeType: false,
+            agreement: false
+        };
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initFormValidation();
+            initPasswordStrength();
+        });
+
+        // 初始化表单验证
+        function initFormValidation() {
+            // 用户名验证
+            document.getElementById('username').addEventListener('input', function() {
+                const value = this.value.trim();
+                const isValid = value.length >= 3 && value.length <= 20;
+                validateField(this, isValid, 'usernameError', '用户名至少需要3个字符');
+                formState.username = isValid;
+            });
+
+            // 用户名失焦时检查唯一性
+            document.getElementById('username').addEventListener('blur', function() {
+                if (!formState.username) return;
+                const merchants = merchantStore.getAllMerchants();
+                if (merchants.some(m => m.username === this.value.trim())) {
+                    showError(this, 'usernameError', '该用户名已被注册');
+                    formState.username = false;
+                }
+            });
+
+            // 密码验证
+            document.getElementById('password').addEventListener('input', function() {
+                const value = this.value;
+                const isValid = value.length >= 6;
+                validateField(this, isValid, 'passwordError', '密码至少需要6个字符');
+                formState.password = isValid;
+                updatePasswordStrength(value);
+                
+                // 如果确认密码已有值，也验证
+                if (document.getElementById('confirmPassword').value) {
+                    validateConfirmPassword();
+                }
+            });
+
+            // 确认密码验证
+            document.getElementById('confirmPassword').addEventListener('input', validateConfirmPassword);
+
+            // 手机号验证
+            document.getElementById('phone').addEventListener('input', function() {
+                const value = this.value.trim();
+                const isValid = merchantStore.validatePhone(value);
+                validateField(this, isValid, 'phoneError', '请输入正确的手机号');
+                formState.phone = isValid;
+            });
+
+            // 手机号失焦时检查唯一性
+            document.getElementById('phone').addEventListener('blur', function() {
+                if (!formState.phone) return;
+                const merchants = merchantStore.getAllMerchants();
+                if (merchants.some(m => m.phone === this.value.trim())) {
+                    showError(this, 'phoneError', '该手机号已被注册');
+                    formState.phone = false;
+                }
+            });
+
+            // 店铺名称验证
+            document.getElementById('storeName').addEventListener('input', function() {
+                const value = this.value.trim();
+                const isValid = value.length >= 2;
+                validateField(this, isValid, 'storeNameError', '店铺名称至少需要2个字符');
+                formState.storeName = isValid;
+            });
+
+            // 店铺类型验证
+            document.getElementById('storeType').addEventListener('change', function() {
+                const isValid = this.value !== '';
+                validateField(this, isValid, 'storeTypeError', '请选择店铺类型');
+                formState.storeType = isValid;
+            });
+
+            // 协议验证
+            document.getElementById('agreement').addEventListener('change', function() {
+                formState.agreement = this.checked;
+                if (!this.checked) {
+                    showError(document.getElementById('username'), 'agreementError', '');
+                }
+            });
+
+            // 表单提交
+            document.getElementById('merchantForm').addEventListener('submit', handleSubmit);
+        }
+
+        // 验证单个字段
+        function validateField(input, isValid, errorId, errorMsg) {
+            const errorElement = document.getElementById(errorId);
+            if (isValid) {
+                input.classList.remove('error');
+                input.classList.add('success');
+                errorElement.style.display = 'none';
+            } else {
+                input.classList.remove('success');
+                input.classList.add('error');
+                errorElement.textContent = errorMsg;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        // 显示错误
+        function showError(input, errorId, message) {
+            const errorElement = document.getElementById(errorId);
+            input.classList.remove('success');
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        // 验证确认密码
+        function validateConfirmPassword() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const isValid = password === confirmPassword && password.length >= 6;
+            
+            validateField(document.getElementById('confirmPassword'), isValid, 'confirmPasswordError', '两次密码输入不一致');
+            formState.confirmPassword = isValid;
+        }
+
+        // 更新密码强度
+        function updatePasswordStrength(password) {
+            const bars = document.querySelectorAll('.strength-bar');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            const level = strength <= 2 ? 'weak' : strength <= 3 ? 'medium' : 'strong';
+            const text = strength <= 2 ? '弱' : strength <= 3 ? '中' : '强';
+            
+            bars.forEach((bar, index) => {
+                bar.classList.remove('active', 'weak', 'medium', 'strong');
+                if (index < strength) {
+                    bar.classList.add('active', level);
+                }
+            });
+            
+            strengthText.textContent = password.length >= 6 ? `密码强度：${text}` : '';
+        }
+
+        // 处理表单提交
+        function handleSubmit(e) {
+            e.preventDefault();
+            
+            // 验证所有字段
+            let isValid = true;
+            
+            if (!formState.username) {
+                showError(document.getElementById('username'), 'usernameError', '用户名至少需要3个字符');
+                isValid = false;
+            }
+            
+            if (!formState.password) {
+                showError(document.getElementById('password'), 'passwordError', '密码至少需要6个字符');
+                isValid = false;
+            }
+            
+            if (!formState.confirmPassword) {
+                showError(document.getElementById('confirmPassword'), 'confirmPasswordError', '两次密码输入不一致');
+                isValid = false;
+            }
+            
+            if (!formState.phone) {
+                showError(document.getElementById('phone'), 'phoneError', '请输入正确的手机号');
+                isValid = false;
+            }
+            
+            if (!formState.storeName) {
+                showError(document.getElementById('storeName'), 'storeNameError', '店铺名称至少需要2个字符');
+                isValid = false;
+            }
+            
+            if (!formState.storeType) {
+                showError(document.getElementById('storeType'), 'storeTypeError', '请选择店铺类型');
+                isValid = false;
+            }
+            
+            if (!formState.agreement) {
+                document.getElementById('agreementError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                showAlert('error', '请完善所有必填信息');
+                return;
+            }
+            
+            // 收集表单数据
+            const formData = {
+                username: document.getElementById('username').value.trim(),
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value,
+                phone: document.getElementById('phone').value.trim(),
+                storeName: document.getElementById('storeName').value.trim(),
+                storeType: document.getElementById('storeType').value,
+                businessLicense: document.getElementById('businessLicense').value.trim(),
+                idCard: document.getElementById('idCard').value.trim()
+            };
+            
+            // 提交注册
+            const result = merchantStore.register(formData);
+            
+            if (result.success) {
+                // 保存到store_info供验证使用
+                const merchant = merchantStore.getMerchantById(result.data.id);
+                localStorage.setItem('store_info', JSON.stringify({
+                    id: merchant.id,
+                    username: merchant.username,
+                    phone: merchant.phone,
+                    storeName: merchant.storeName,
+                    storeType: merchant.storeType,
+                    status: merchant.status
+                }));
+                
+                // 自动审核通过
+                const reviewResult = merchantStore.reviewApplication(
+                    result.data.id,
+                    'approved',
+                    '系统自动审核通过',
+                    '系统管理员'
+                );
+                
+                if (reviewResult.success) {
+                    // 更新store_info状态为已通过
+                    localStorage.setItem('store_info', JSON.stringify({
+                        id: reviewResult.data.id,
+                        username: reviewResult.data.username,
+                        phone: reviewResult.data.phone,
+                        storeName: reviewResult.data.storeName,
+                        storeType: reviewResult.data.storeType,
+                        status: reviewResult.data.status
+                    }));
+                    
+                    // 显示成功提示
+                    showAlert('success', '✓ 入驻申请已提交并审核通过！');
+                    
+                    // 禁用提交按钮
+                    document.getElementById('submitBtn').disabled = true;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check-circle"></i> 已审核通过';
+                    document.getElementById('submitBtn').style.background = 'linear-gradient(135deg, #52c41a 0%, #389e0d 100%)';
+                    
+                    // 2秒后显示返回主页提示
+                    setTimeout(() => {
+                        showAlert('success', '🎉 恭喜！您的商家入驻已审核通过！<br><strong>请返回首页 → 点击"卖家中心" → "商品后台" 进入商家管理。</strong>');
+                        
+                        // 添加返回按钮
+                        const btnContainer = document.querySelector('.btn-container');
+                        if (btnContainer) {
+                            btnContainer.innerHTML = `
+                                <button type="button" class="btn btn-secondary" onclick="goToHome()">
+                                    <i class="fas fa-home"></i> 返回首页
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="goToMerchantDashboard()" style="background: linear-gradient(135deg, #52c41a 0%, #389e0d 100%);">
+                                    <i class="fas fa-tachometer-alt"></i> 进入商品后台
+                                </button>
+                            `;
+                        }
+                    }, 2000);
+                } else {
+                    showAlert('success', '✓ 入驻申请已提交！');
+                    document.getElementById('submitBtn').disabled = true;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check"></i> 已提交';
+                }
+            } else {
+                showAlert('error', result.message);
+            }
+        }
+        
+        // 跳转到首页
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+        
+        // 跳转到商品后台登录页面
+        function goToMerchantDashboard() {
+            window.location.href = 'merchant-login.html';
+        }
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('merchantForm').reset();
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.classList.remove('success', 'error');
+            });
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.strength-bar').forEach(bar => {
+                bar.classList.remove('active', 'weak', 'medium', 'strong');
+            });
+            document.getElementById('strengthText').textContent = '';
+            
+            // 重置验证状态
+            Object.keys(formState).forEach(key => {
+                formState[key] = false;
+            });
+            
+            // 重置按钮状态
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> 提交申请';
+            
+            hideAllAlerts();
+        }
+
+        // 显示提示框
+        function showAlert(type, message) {
+            hideAllAlerts();
+            const alertElement = document.getElementById('alert' + type.charAt(0).toUpperCase() + type.slice(1));
+            // 使用innerHTML支持HTML内容
+            alertElement.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            alertElement.style.display = 'block';
+            
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
+
+        // 隐藏所有提示框
+        function hideAllAlerts() {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
+

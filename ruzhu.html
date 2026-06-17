@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家入驻流程</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .process-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            padding: 50px;
+        }
+
+        .process-step {
+            display: flex;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .process-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .step-content {
+            margin-left: 25px;
+            flex: 1;
+        }
+
+        .step-content h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .step-content ul {
+            margin-top: 10px;
+            padding-left: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .step-content ul li {
+            margin-bottom: 8px;
+        }
+
+        /* 连接线 */
+        .process-step::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 55px;
+            width: 2px;
+            height: calc(100% + 5px);
+            background: linear-gradient(to bottom, #ddd, transparent);
+        }
+
+        .process-step:last-child::before {
+            display: none;
+        }
+
+        /* 图标 */
+        .step-icon {
+            color: #667eea;
+            font-size: 22px;
+        }
+
+        .tips-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin-top: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .tips-box p {
+            color: #856404;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .contact-info p {
+            color: #388e3c;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .submit-btn {
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .process-container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .process-step::before {
+                left: 19px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-store"></i> 商家入驻流程</h1>
+            <p>欢迎加入我们的平台，开启您的电商之旅</p>
+        </div>
+
+        <div class="process-container">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h2><i class="fas fa-user-plus step-icon"></i> 注册账号</h2>
+                    <p>首先需要注册成为平台用户，完成基础信息填写和手机验证。</p>
+                    <ul>
+                        <li>填写用户名、密码、手机号码</li>
+                        <li>完成短信验证</li>
+                        <li>设置安全问题（可选）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h2><i class="fas fa-file-text step-icon"></i> 提交资质</h2>
+                    <p>提交企业或个人资质证明，我们会在1-3个工作日内完成审核。</p>
+                    <ul>
+                        <li>企业营业执照（企业用户）</li>
+                        <li>法人身份证正反面</li>
+                        <li>税务登记证（企业用户）</li>
+                        <li>银行账户信息</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h2><i class="fas fa-check-circle step-icon"></i> 审核通过</h2>
+                    <p>审核通过后，您将收到系统通知和邮件提醒。</p>
+                    <ul>
+                        <li>系统自动发送审核结果通知</li>
+                        <li>邮件包含入驻成功凭证</li>
+                        <li>账号自动升级为商家账号</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h2><i class="fas fa-box step-icon"></i> 上架商品</h2>
+                    <p>审核通过后即可开始上架商品，开启您的店铺运营。</p>
+                    <ul>
+                        <li>完善店铺信息和logo</li>
+                        <li>添加商品分类和商品</li>
+                        <li>设置商品价格和库存</li>
+                        <li>发布商品到店铺</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tips-box">
+                <p><i class="fas fa-info-circle"></i> 温馨提示：请确保提交的资质文件清晰有效，否则可能会影响审核进度。如有疑问，请联系客服。</p>
+            </div>
+
+            <div class="contact-info">
+                <h3><i class="fas fa-headphones"></i> 联系客服</h3>
+                <p>客服热线：400-888-8888（工作日 9:00-18:00）</p>
+                <p>邮箱：service@example.com</p>
+            </div>
+
+            <div class="btn-container">
+                <button class="submit-btn" onclick="window.location.href='ruzhu-form.html'">
+                    <i class="fas fa-arrow-right"></i> 立即入驻
+                </button>
+                <br>
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> 返回首页
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

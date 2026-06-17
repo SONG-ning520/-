@@ -1,0 +1,1104 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品分类 - 电商平台</title>
+    <link rel="stylesheet" href="/css/xiahezi.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #FFF0F5;
+            min-height: 100vh;
+        }
+
+        .category-page {
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .breadcrumb .home-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: #fff;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .breadcrumb .home-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        }
+
+        .breadcrumb .home-link-btn i {
+            font-size: 16px;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #764ba2;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .breadcrumb .current {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            flex: 1;
+            background: #fff;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .search-box input::placeholder {
+            color: #999;
+        }
+
+        .search-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .search-btn:hover {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+            transform: scale(1.02);
+        }
+
+        .clear-search-btn {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .clear-search-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 24px;
+        }
+
+        .sidebar {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar h3 i {
+            color: #667eea;
+        }
+
+        .category-list {
+            list-style: none;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: #667eea #f0f0f0;
+        }
+
+        .category-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .category-list::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 3px;
+        }
+
+        .category-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
+        }
+
+        .category-list::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        .category-item {
+            margin-bottom: 6px;
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .category-link:hover,
+        .category-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .category-link i {
+            font-size: 16px;
+        }
+
+        .category-link .count {
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .category-link:hover .count,
+        .category-link.active .count {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-section {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .filter-section h4 {
+            font-size: 15px;
+            color: #333;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-section h4 i {
+            color: #667eea;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .filter-option:hover {
+            background: #e9ecef;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #667eea;
+        }
+
+        .filter-option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .price-range-input {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px dashed #e8e8e8;
+        }
+
+        .price-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .price-input-group input {
+            width: 80px;
+            padding: 8px 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 13px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .price-input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        .price-separator {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .price-filter-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .price-filter-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .products-section {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header h2 i {
+            color: #667eea;
+        }
+
+        .sort-options {
+            display: flex;
+            gap: 12px;
+        }
+
+        .sort-btn {
+            padding: 6px 14px;
+            background: #f8f9fa;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sort-btn:hover,
+        .sort-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .result-count {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .result-count strong {
+            color: #667eea;
+        }
+
+        .products-box {
+            padding: 16px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .back-home-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .back-home-btn i {
+            font-size: 18px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .breadcrumb {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .sort-options {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="category-page">
+        <div class="breadcrumb">
+            <a href="index.html" class="home-link-btn">
+                <i class="fas fa-home"></i> 返回首页
+            </a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span class="current">商品分类</span>
+        </div>
+
+        <div class="page-header">
+            <h1><i class="fas fa-th-large"></i> 商品分类</h1>
+            <p>浏览我们的商品分类，找到您想要的商品</p>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索商品名称..." onkeyup="handleSearch(event)">
+                    <button class="search-btn" onclick="performSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">
+                    <i class="fas fa-times"></i> 清除搜索
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3><i class="fas fa-list"></i> 分类列表</h3>
+                <ul class="category-list" id="categoryList">
+                </ul>
+
+                <div class="filter-section">
+                    <h4><i class="fas fa-filter"></i> 价格区间</h4>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="price1" onchange="filterProducts()">
+                            <label for="price1">¥0 - ¥100</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price2" onchange="filterProducts()">
+                            <label for="price2">¥100 - ¥500</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price3" onchange="filterProducts()">
+                            <label for="price3">¥500 - ¥1000</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price4" onchange="filterProducts()">
+                            <label for="price4">¥1000 以上</label>
+                        </div>
+                    </div>
+                    <div class="price-range-input">
+                        <div class="price-input-group">
+                            <input type="number" id="minPrice" placeholder="最低价" min="0">
+                            <span class="price-separator">-</span>
+                            <input type="number" id="maxPrice" placeholder="最高价" min="0">
+                        </div>
+                        <button class="price-filter-btn" onclick="applyPriceRange()">
+                            <i class="fas fa-search"></i> 筛选
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="products-section">
+                <div class="section-header">
+                    <div>
+                        <h2><i class="fas fa-box-open"></i> <span id="currentCategory">全部商品</span></h2>
+                        <div class="result-count">
+                            共找到 <strong id="productCount">0</strong> 件商品
+                        </div>
+                    </div>
+                    <div class="sort-options">
+                        <button class="sort-btn active" onclick="sortProducts('default')">综合</button>
+                        <button class="sort-btn" onclick="sortProducts('price-asc')">价格↑</button>
+                        <button class="sort-btn" onclick="sortProducts('price-desc')">价格↓</button>
+                        <button class="sort-btn" onclick="sortProducts('name')">名称</button>
+                    </div>
+                </div>
+
+                <div class="products-box">
+                    <div class="products-grid" id="productsGrid">
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div class="back-to-home">
+            <a href="index.html" class="back-home-btn">
+                <i class="fas fa-home"></i> 返回首页
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const productData = [
+            { id: 1, name: '惠普 HyperX 暗影精灵 PRO 16', category: '电脑整机', price: 8999, originalPrice: 11699, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-26-19.png' },
+            { id: 2, name: '华硕天选7 Pro Max', category: '电脑整机', price: 14999, originalPrice: 19499, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-27-02.png' },
+            { id: 3, name: '惠普星Book Pro 16 2025', category: '电脑整机', price: 5948, originalPrice: 7732, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-27-22.png' },
+            { id: 4, name: '联想拯救者 R7000P 2025', category: '电脑整机', price: 10188, originalPrice: 13244, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-27-36.png' },
+            { id: 5, name: '小米 Redmi Book 16 焕新版', category: '电脑整机', price: 3599, originalPrice: 4679, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-28-42.png' },
+            { id: 6, name: '华硕天选7 Pro 酷睿版', category: '电脑整机', price: 8999, originalPrice: 11699, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-30-43.png' },
+            { id: 7, name: '华硕无畏16Pro 锐龙AI版', category: '电脑整机', price: 4504, originalPrice: 5855, image: '../tupian/shangpin/diannao/Snipaste_2026-06-13_19-30-57.png' },
+            { id: 8, name: '狼蛛键盘（红轴/RGB背光）', category: '外设配件', price: 299, originalPrice: 389, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-38-56.png' },
+            { id: 9, name: 'DMA（三角洲/无畏契约）', category: '外设配件', price: 89, originalPrice: 116, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-39-46.png' },
+            { id: 10, name: '狼蛛（F2088AIr）', category: '外设配件', price: 183, originalPrice: 240, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-40-06.png' },
+            { id: 11, name: 'U盘（苹果/安卓）', category: '外设配件', price: 138, originalPrice: 188, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-40-54.png' },
+            { id: 12, name: '罗技G（PROX2头戴式）', category: '外设配件', price: 988, originalPrice: 1088, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-41-06.png' },
+            { id: 13, name: '华硕2K（260HZ/高刷）', category: '外设配件', price: 1816, originalPrice: 2070, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-41-28.png' },
+            { id: 14, name: '七彩虹酷睿（14代I5/RTX5060Ti）', category: '外设配件', price: 3399, originalPrice: 3909, image: '../tupian/shangpin/waishe/Snipaste_2026-06-14_16-41-43.png' },
+            { id: 15, name: '连衣裙（碎花/中长款）', category: '女装', price: 199, originalPrice: 259, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-46-26.png' },
+            { id: 16, name: 'T恤（纯棉/基础款）', category: '女装', price: 59, originalPrice: 77, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-46-45.png' },
+            { id: 17, name: '牛仔裤（高腰/直筒）', category: '女装', price: 159, originalPrice: 207, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-46-58.png' },
+            { id: 18, name: '针织开衫（宽松/春秋款）', category: '女装', price: 129, originalPrice: 168, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-47-09.png' },
+            { id: 19, name: '半身裙（A字/显瘦）', category: '女装', price: 139, originalPrice: 181, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-47-27.png' },
+            { id: 20, name: '风衣（长款/显瘦）', category: '女装', price: 299, originalPrice: 389, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-47-33.png' },
+            { id: 21, name: '毛衣（套头/宽松）', category: '女装', price: 169, originalPrice: 220, image: '../tupian/shangpin/nuzhuang/Snipaste_2026-06-14_16-47-44.png' },
+            { id: 22, name: '衬衫（商务/免烫）', category: '男装', price: 129, originalPrice: 168, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-44-02.png' },
+            { id: 23, name: '休闲裤（束脚/弹力）', category: '男装', price: 149, originalPrice: 194, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-44-25.png' },
+            { id: 24, name: '外套（夹克/防风）', category: '男装', price: 259, originalPrice: 337, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-44-42.png' },
+            { id: 25, name: '卫衣（连帽/加绒）', category: '男装', price: 169, originalPrice: 220, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-44-55.png' },
+            { id: 26, name: 'T恤（纯棉/基础款）', category: '男装', price: 79, originalPrice: 103, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-45-27.png' },
+            { id: 27, name: '牛仔裤（直筒/修身）', category: '男装', price: 189, originalPrice: 246, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-45-37.png' },
+            { id: 28, name: '西装（商务/修身）', category: '男装', price: 399, originalPrice: 519, image: '../tupian/shangpin/nanzhuang/Snipaste_2026-06-14_16-45-54.png' },
+            { id: 29, name: '运动鞋（缓震/透气）', category: '鞋靴', price: 299, originalPrice: 389, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-48-55.png' },
+            { id: 30, name: '皮鞋（正装/真皮）', category: '鞋靴', price: 399, originalPrice: 519, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-49-27.png' },
+            { id: 31, name: '凉鞋（平底/防滑）', category: '鞋靴', price: 99, originalPrice: 129, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-50-07.png' },
+            { id: 32, name: '马丁靴（厚底/耐磨）', category: '鞋靴', price: 359, originalPrice: 467, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-50-18.png' },
+            { id: 33, name: '高跟鞋（细跟/优雅）', category: '鞋靴', price: 259, originalPrice: 337, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-50-32.png' },
+            { id: 34, name: '帆布鞋（经典/百搭）', category: '鞋靴', price: 129, originalPrice: 168, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-51-06.png' },
+            { id: 35, name: '拖鞋（居家/舒适）', category: '鞋靴', price: 49, originalPrice: 64, image: '../tupian/shangpin/xiexue/Snipaste_2026-06-14_16-51-22.png' },
+            { id: 36, name: '沙发（三人位/布艺）', category: '家居', price: 1899, originalPrice: 2469, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-52-46.png' },
+            { id: 37, name: '床（1.8m/实木框架）', category: '家居', price: 2299, originalPrice: 2989, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-53-00.png' },
+            { id: 38, name: '衣柜（推拉门/大容量）', category: '家居', price: 1599, originalPrice: 2079, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-53-21.png' },
+            { id: 39, name: '书桌（简约/带抽屉）', category: '家居', price: 499, originalPrice: 649, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-53-37.png' },
+            { id: 40, name: '餐椅（软包/可叠放）', category: '家居', price: 199, originalPrice: 259, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-54-09.png' },
+            { id: 41, name: '电视柜（现代/储物）', category: '家居', price: 699, originalPrice: 909, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-54-20.png' },
+            { id: 42, name: '床头柜（双抽屉/简约）', category: '家居', price: 299, originalPrice: 389, image: '../tupian/shangpin/jiaju/Snipaste_2026-06-14_16-54-53.png' },
+            { id: 43, name: '床品套件（四件套/纯棉）', category: '家纺', price: 199, originalPrice: 259, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-57-04.png' },
+            { id: 44, name: '被子（羽绒被/冬用）', category: '家纺', price: 399, originalPrice: 519, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-57-19.png' },
+            { id: 45, name: '枕头（记忆棉/护颈）', category: '家纺', price: 129, originalPrice: 168, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-57-28.png' },
+            { id: 46, name: '毛巾浴巾（纯棉/吸水）', category: '家纺', price: 59, originalPrice: 77, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-58-16.png' },
+            { id: 47, name: '窗帘（遮光/落地）', category: '家纺', price: 299, originalPrice: 389, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-58-43.png' },
+            { id: 48, name: '地毯（短绒/客厅）', category: '家纺', price: 199, originalPrice: 259, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-59-07.png' },
+            { id: 49, name: '抱枕（靠垫/装饰）', category: '家纺', price: 49, originalPrice: 64, image: '../tupian/shangpin/jiafang/Snipaste_2026-06-14_16-59-26.png' },
+            { id: 50, name: '苹果（富士/5斤装）', category: '水果', price: 39, originalPrice: 51, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-00-04.png' },
+            { id: 51, name: '香蕉（进口/3斤装）', category: '水果', price: 29, originalPrice: 38, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-00-19.png' },
+            { id: 52, name: '橙子（脐橙/5斤装）', category: '水果', price: 49, originalPrice: 64, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-00-27.png' },
+            { id: 53, name: '柚子（红心/2个装）', category: '水果', price: 39, originalPrice: 51, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-00-37.png' },
+            { id: 54, name: '热带水果（芒果/菠萝蜜组合）', category: '水果', price: 69, originalPrice: 90, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-00-47.png' },
+            { id: 55, name: '葡萄（巨峰/2斤装）', category: '水果', price: 35, originalPrice: 46, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-01-14.png' },
+            { id: 56, name: '草莓（新鲜/1斤装）', category: '水果', price: 45, originalPrice: 59, image: '../tupian/shangpin/shuiguo/Snipaste_2026-06-14_17-01-33.png' },
+            { id: 57, name: '猪肉（五花肉/500g）', category: '肉类', price: 25, originalPrice: 33, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-01-56.png' },
+            { id: 58, name: '牛肉（牛腩/500g）', category: '肉类', price: 45, originalPrice: 59, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-02-14.png' },
+            { id: 59, name: '羊肉（羊排/500g）', category: '肉类', price: 55, originalPrice: 72, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-02-24.png' },
+            { id: 60, name: '鸡肉（整鸡/1kg）', category: '肉类', price: 35, originalPrice: 46, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-02-32.png' },
+            { id: 61, name: '鸭肉（鸭腿/500g）', category: '肉类', price: 20, originalPrice: 26, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-02-41.png' },
+            { id: 62, name: '鱼肉（三文鱼/500g）', category: '肉类', price: 65, originalPrice: 85, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-02-59.png' },
+            { id: 63, name: '海鲜（虾仁/500g）', category: '肉类', price: 55, originalPrice: 72, image: '../tupian/shangpin/roulei/Snipaste_2026-06-14_17-03-09.png' },
+            { id: 64, name: '坚果（混合装/500g）', category: '零食', price: 49, originalPrice: 64, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-03-29.png' },
+            { id: 65, name: '糖果巧克力（礼盒装）', category: '零食', price: 39, originalPrice: 51, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-03-42.png' },
+            { id: 66, name: '膨化食品（薯片/大包）', category: '零食', price: 15, originalPrice: 20, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-03-50.png' },
+            { id: 67, name: '饼干（夹心/独立包装）', category: '零食', price: 25, originalPrice: 33, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-04-06.png' },
+            { id: 68, name: '肉干（牛肉干/100g）', category: '零食', price: 29, originalPrice: 38, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-04-19.png' },
+            { id: 69, name: '果脯（芒果干/200g）', category: '零食', price: 19, originalPrice: 25, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-04-35.png' },
+            { id: 70, name: '饮料（气泡水/6瓶装）', category: '零食', price: 29, originalPrice: 38, image: '../tupian/shangpin/lingshi/Snipaste_2026-06-14_17-04-44.png' },
+            { id: 71, name: '洁面乳（氨基酸/温和）', category: '护肤', price: 69, originalPrice: 90, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-05-17.png' },
+            { id: 72, name: '面膜（补水面膜/10片）', category: '护肤', price: 49, originalPrice: 64, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-05-27.png' },
+            { id: 73, name: '面霜（保湿/抗初老）', category: '护肤', price: 129, originalPrice: 168, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-05-35.png' },
+            { id: 74, name: '乳液（清爽型/控油）', category: '护肤', price: 89, originalPrice: 116, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-05-47.png' },
+            { id: 75, name: '精华液（美白/提亮）', category: '护肤', price: 159, originalPrice: 207, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-06-00.png' },
+            { id: 76, name: '防晒霜（SPF50+/PA+++）', category: '护肤', price: 79, originalPrice: 103, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-06-10.png' },
+            { id: 77, name: '眼霜（去黑眼圈/紧致）', category: '护肤', price: 119, originalPrice: 155, image: '../tupian/shangpin/hufu/Snipaste_2026-06-14_17-06-18.png' },
+            { id: 78, name: '口红（哑光/持久）', category: '彩妆', price: 89, originalPrice: 116, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-06-52.png' },
+            { id: 79, name: '眼影盘（大地色/12色）', category: '彩妆', price: 69, originalPrice: 90, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-07-07.png' },
+            { id: 80, name: '粉底液（自然色/遮瑕）', category: '彩妆', price: 129, originalPrice: 168, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-07-16.png' },
+            { id: 81, name: '腮红（珠光/显气色）', category: '彩妆', price: 59, originalPrice: 77, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-07-25.png' },
+            { id: 82, name: '睫毛膏（纤长/不晕染）', category: '彩妆', price: 49, originalPrice: 64, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-07-44.png' },
+            { id: 83, name: '眉笔（防水/易上色）', category: '彩妆', price: 39, originalPrice: 51, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-07-54.png' },
+            { id: 84, name: '定妆喷雾（持妆/控油）', category: '彩妆', price: 59, originalPrice: 77, image: '../tupian/shangpin/caizhuang/Snipaste_2026-06-14_17-08-08.png' },
+            { id: 85, name: '跑步鞋（缓震/轻量）', category: '运动', price: 359, originalPrice: 467, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-08-36.png' },
+            { id: 86, name: '篮球鞋（高帮/防滑）', category: '运动', price: 459, originalPrice: 597, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-08-53.png' },
+            { id: 87, name: '帆布鞋（经典款/百搭）', category: '运动', price: 129, originalPrice: 168, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-09-03.png' },
+            { id: 88, name: '瑜伽垫（加厚/防滑）', category: '运动', price: 69, originalPrice: 90, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-09-15.png' },
+            { id: 89, name: '哑铃（可调节/5kg）', category: '运动', price: 89, originalPrice: 116, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-10-00.png' },
+            { id: 90, name: '跳绳（计数/轴承）', category: '运动', price: 39, originalPrice: 51, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-10-19.png' },
+            { id: 91, name: '运动水壶（大容量/防漏）', category: '运动', price: 49, originalPrice: 64, image: '../tupian/shangpin/yundong/Snipaste_2026-06-14_17-10-29.png' },
+            { id: 92, name: '帐篷（双人/防雨）', category: '户外装备', price: 299, originalPrice: 389, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-11-02.png' },
+            { id: 93, name: '睡袋（羽绒/保暖）', category: '户外装备', price: 199, originalPrice: 259, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-11-19.png' },
+            { id: 94, name: '登山杖（碳纤维/可伸缩）', category: '户外装备', price: 89, originalPrice: 116, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-11-29.png' },
+            { id: 95, name: '背包（30L/防水）', category: '户外装备', price: 159, originalPrice: 207, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-11-42.png' },
+            { id: 96, name: '头灯（强光/续航长）', category: '户外装备', price: 59, originalPrice: 77, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-11-54.png' },
+            { id: 97, name: '野餐垫（防潮/大号）', category: '户外装备', price: 49, originalPrice: 64, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-12-07.png' },
+            { id: 98, name: '保温杯（不锈钢/500ml）', category: '户外装备', price: 69, originalPrice: 90, image: '../tupian/shangpin/huwaizhuangbei/Snipaste_2026-06-14_17-13-24.png' },
+            { id: 99, name: '文学小说（畅销书/精装）', category: '图书', price: 49, originalPrice: 64, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-13-43.png' },
+            { id: 100, name: '科技科普（图解版/入门）', category: '图书', price: 39, originalPrice: 51, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-13-59.png' },
+            { id: 101, name: '儿童读物（绘本/注音）', category: '图书', price: 29, originalPrice: 38, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-14-22.png' },
+            { id: 102, name: '历史传记（名人故事）', category: '图书', price: 59, originalPrice: 77, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-14-50.png' },
+            { id: 103, name: '心理学（自我成长类）', category: '图书', price: 45, originalPrice: 59, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-15-32.png' },
+            { id: 104, name: '投资理财（实操指南）', category: '图书', price: 55, originalPrice: 72, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-16-11.png' },
+            { id: 105, name: '外语学习（语法+词汇）', category: '图书', price: 39, originalPrice: 51, image: '../tupian/shangpin/tushu/Snipaste_2026-06-14_17-16-49.png' },
+            { id: 106, name: '积木玩具（益智/大颗粒）', category: '玩具', price: 59, originalPrice: 77, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-17-08.png' },
+            { id: 107, name: '遥控车（高速/可漂移）', category: '玩具', price: 89, originalPrice: 116, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-17-23.png' },
+            { id: 108, name: '毛绒玩具（可爱/柔软）', category: '玩具', price: 49, originalPrice: 64, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-17-32.png' },
+            { id: 109, name: '拼图（1000片/风景）', category: '玩具', price: 39, originalPrice: 51, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-17-42.png' },
+            { id: 110, name: '益智棋类（围棋/象棋）', category: '玩具', price: 69, originalPrice: 90, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-18-19.png' },
+            { id: 111, name: 'DIY手工（创意材料包）', category: '玩具', price: 29, originalPrice: 38, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-18-31.png' },
+            { id: 112, name: '户外玩具（飞盘/滑板）', category: '玩具', price: 79, originalPrice: 103, image: '../tupian/shangpin/wunju/Snipaste_2026-06-14_17-18-53.png' }
+        ];
+
+        const categoryIcons = {
+            '全部商品': 'fas fa-box',
+            '电脑整机': 'fas fa-desktop',
+            '外设配件': 'fas fa-mouse',
+            '女装': 'fas fa-shirt',
+            '男装': 'fas fa-user',
+            '鞋靴': 'fas fa-shoe-prints',
+            '家居': 'fas fa-home',
+            '家纺': 'fas fa-bed',
+            '水果': 'fas fa-apple-alt',
+            '肉类': 'fas fa-drumstick-bite',
+            '零食': 'fas fa-cookie',
+            '护肤': 'fas fa-spa',
+            '彩妆': 'fas fa-palette',
+            '运动': 'fas fa-running',
+            '户外装备': 'fas fa-tree-pine',
+            '图书': 'fas fa-book',
+            '玩具': 'fas fa-gamepad'
+        };
+
+        let currentCategory = '全部商品';
+        let currentSort = 'default';
+
+        function getCategories() {
+            const categories = ['全部商品'];
+            const categorySet = new Set();
+            productData.forEach(product => {
+                categorySet.add(product.category);
+            });
+            categories.push(...Array.from(categorySet));
+            return categories;
+        }
+
+        function getCategoryCount(category) {
+            if (category === '全部商品') {
+                return productData.length;
+            }
+            return productData.filter(p => p.category === category).length;
+        }
+
+        function renderCategoryList() {
+            const categoryList = document.getElementById('categoryList');
+            const categories = getCategories();
+            
+            categoryList.innerHTML = categories.map(category => {
+                const count = getCategoryCount(category);
+                const isActive = category === currentCategory;
+                const iconClass = categoryIcons[category] || 'fas fa-box';
+                
+                return `
+                    <li class="category-item">
+                        <a href="#" class="category-link ${isActive ? 'active' : ''}" onclick="selectCategory('${category}')">
+                            <span><i class="${iconClass}"></i> ${category}</span>
+                            <span class="count">${count}</span>
+                        </a>
+                    </li>
+                `;
+            }).join('');
+        }
+
+        function selectCategory(category) {
+            currentCategory = category;
+            document.getElementById('currentCategory').textContent = category;
+            renderCategoryList();
+            renderProducts();
+        }
+
+        let customPriceRange = null;
+        let searchKeyword = '';
+
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            } else {
+                const keyword = event.target.value.trim();
+                searchKeyword = keyword;
+                const clearBtn = document.getElementById('clearSearchBtn');
+                if (keyword) {
+                    clearBtn.style.display = 'flex';
+                } else {
+                    clearBtn.style.display = 'none';
+                }
+                renderProducts();
+            }
+        }
+
+        function performSearch() {
+            const input = document.getElementById('searchInput');
+            searchKeyword = input.value.trim();
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (searchKeyword) {
+                clearBtn.style.display = 'flex';
+            } else {
+                clearBtn.style.display = 'none';
+            }
+            renderProducts();
+        }
+
+        function clearSearch() {
+            searchKeyword = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').style.display = 'none';
+            renderProducts();
+        }
+
+        function getPriceFilter() {
+            const filters = [];
+            if (document.getElementById('price1').checked) filters.push({ min: 0, max: 100 });
+            if (document.getElementById('price2').checked) filters.push({ min: 100, max: 500 });
+            if (document.getElementById('price3').checked) filters.push({ min: 500, max: 1000 });
+            if (document.getElementById('price4').checked) filters.push({ min: 1000, max: Infinity });
+            
+            // 添加自定义价格范围
+            if (customPriceRange) {
+                filters.push(customPriceRange);
+            }
+            
+            return filters;
+        }
+
+        function applyPriceRange() {
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            
+            if (minPrice && maxPrice) {
+                const min = parseFloat(minPrice);
+                const max = parseFloat(maxPrice);
+                
+                if (min >= 0 && max >= min) {
+                    customPriceRange = { min: min, max: max };
+                    // 清除预设价格区间的选中状态
+                    document.getElementById('price1').checked = false;
+                    document.getElementById('price2').checked = false;
+                    document.getElementById('price3').checked = false;
+                    document.getElementById('price4').checked = false;
+                    renderProducts();
+                } else {
+                    alert('请输入有效的价格范围（最高价需大于最低价）');
+                }
+            } else if (minPrice || maxPrice) {
+                // 只输入了一个值
+                const min = minPrice ? parseFloat(minPrice) : 0;
+                const max = maxPrice ? parseFloat(maxPrice) : Infinity;
+                customPriceRange = { min: min, max: max };
+                // 清除预设价格区间的选中状态
+                document.getElementById('price1').checked = false;
+                document.getElementById('price2').checked = false;
+                document.getElementById('price3').checked = false;
+                document.getElementById('price4').checked = false;
+                renderProducts();
+            } else {
+                // 清空自定义价格范围
+                customPriceRange = null;
+                renderProducts();
+            }
+        }
+
+        function filterProducts() {
+            // 当点击预设价格区间时，清空自定义价格范围
+            customPriceRange = null;
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            renderProducts();
+        }
+
+        function sortProducts(sortType) {
+            currentSort = sortType;
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts();
+        }
+
+        function applySort(products) {
+            const sorted = [...products];
+            switch (currentSort) {
+                case 'price-asc':
+                    return sorted.sort((a, b) => a.price - b.price);
+                case 'price-desc':
+                    return sorted.sort((a, b) => b.price - a.price);
+                case 'name':
+                    return sorted.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+                default:
+                    return sorted;
+            }
+        }
+
+        // 标准化图片路径（处理不同目录下的路径差异）
+        function normalizeImagePath(imagePath) {
+            if (!imagePath) {
+                return '../tupian/Snipaste_2026-06-13_16-59-18.png';
+            }
+            
+            // Base64图片直接返回
+            if (imagePath.startsWith('data:image/')) {
+                return imagePath;
+            }
+            
+            // 绝对路径直接返回
+            if (imagePath.startsWith('/') || imagePath.startsWith('http')) {
+                return imagePath;
+            }
+            
+            // 如果路径已经是 tupian/ 开头，需要加上 ../
+            if (imagePath.startsWith('tupian/')) {
+                return '../' + imagePath;
+            }
+            
+            // 如果路径已经是 ../tupian/ 开头，直接返回
+            if (imagePath.startsWith('../tupian/')) {
+                return imagePath;
+            }
+            
+            // 其他情况，假设是相对路径，加上 ../tupian/
+            return '../tupian/' + imagePath;
+        }
+
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'article');
+            card.setAttribute('aria-label', `商品：${product.name}，价格¥${product.price}`);
+            card.setAttribute('data-product-id', product.id);
+            
+            // 标准化图片路径
+            const imageSrc = normalizeImagePath(product.image);
+            
+            card.innerHTML = `
+                <div class="product-image-wrapper" style="min-height: 160px;">
+                    <img 
+                        src="${imageSrc}" 
+                        alt="${product.name}" 
+                        class="product-image"
+                        loading="lazy"
+                        onload="this.style.opacity='1';"
+                        onerror="this.src='../tupian/Snipaste_2026-06-13_16-59-18.png'; this.style.opacity='1';"
+                        style="opacity: 0; transition: opacity 0.3s ease;"
+                    >
+                </div>
+                <div class="product-info">
+                    <span class="product-name" title="${product.name}">${product.name}</span>
+                    <div class="product-price-row">
+                        <span class="product-price">¥${product.price.toFixed(2)}</span>
+                        <span class="product-original-price">¥${product.originalPrice.toFixed(2)}</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="favorite-btn" aria-label="收藏商品" tabindex="0">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <button class="cart-btn" aria-label="加入购物车" tabindex="0">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>加入购物车</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.favorite-btn') || e.target.closest('.cart-btn')) {
+                    return;
+                }
+                // 支持iframe和直接打开两种方式
+                const detailUrl = `商品详情.html?id=${product.id}`;
+                if (window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'navigate',
+                        url: detailUrl
+                    }, '*');
+                } else {
+                    window.location.href = detailUrl;
+                }
+            });
+            
+            const favoriteBtn = card.querySelector('.favorite-btn');
+            favoriteBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('favorited');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('far');
+                icon.classList.toggle('fas');
+                icon.style.color = this.classList.contains('favorited') ? '#ffd700' : '#999';
+            });
+            
+            const cartBtn = card.querySelector('.cart-btn');
+            cartBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('added');
+                const icon = this.querySelector('i');
+                const text = this.querySelector('span');
+                if (this.classList.contains('added')) {
+                    icon.style.color = '#ff4444';
+                    text.style.color = '#ff4444';
+                    text.textContent = '已加入';
+                } else {
+                    icon.style.color = '#666';
+                    text.style.color = '#666';
+                    text.textContent = '加入购物车';
+                }
+            });
+            
+            return card;
+        }
+
+        function renderProducts() {
+            const productsGrid = document.getElementById('productsGrid');
+            const productCount = document.getElementById('productCount');
+            
+            let products = productData;
+            
+            if (currentCategory !== '全部商品') {
+                products = products.filter(p => p.category === currentCategory);
+            }
+            
+            // 搜索筛选
+            if (searchKeyword) {
+                const keyword = searchKeyword.toLowerCase();
+                products = products.filter(p => 
+                    p.name.toLowerCase().includes(keyword) ||
+                    p.category.toLowerCase().includes(keyword)
+                );
+            }
+            
+            const priceFilters = getPriceFilter();
+            if (priceFilters.length > 0) {
+                products = products.filter(p => {
+                    return priceFilters.some(f => p.price >= f.min && p.price < f.max);
+                });
+            }
+            
+            products = applySort(products);
+            
+            productCount.textContent = products.length;
+            
+            if (products.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fas fa-search"></i>
+                        <p>没有找到符合条件的商品</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsGrid.innerHTML = '';
+            products.forEach(product => {
+                productsGrid.appendChild(createProductCard(product));
+            });
+        }
+
+        renderCategoryList();
+        renderProducts();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顶部导航栏</title>
+    <link rel="stylesheet" href="/css/top.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-top">
+            <!-- 最左侧 - 收货地址 -->
+            <div class="location-section">
+                <a href="ditu.html" target="_top" class="location-link" id="locationLink">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>收货地址</span>
+                </a>
+            </div>
+            
+            <!-- 右上角 - 导航链接 -->
+            <nav class="nav-section">
+                <!-- 未登录状态 -->
+                <div id="guestNav" style="display: flex; align-items: center;">
+                    <a href="zhuce.html" target="_top" class="nav-link no-dropdown" id="registerBtn">你好，请注册</a>
+                    <span class="nav-divider">|</span>
+                    <a href="denglu.html" target="_top" class="nav-link no-dropdown" id="loginBtn">登录</a>
+                    <span class="nav-divider">|</span>
+                </div>
+                
+                <!-- 已登录状态 -->
+                <div id="userNav" style="display: none; align-items: center;">
+                    <span class="nav-link no-dropdown" style="color: #ff6b6b; cursor: default;">
+                        <i class="fas fa-user-circle"></i> 欢迎，<span id="displayUsername"></span>
+                    </span>
+                    <span class="nav-divider">|</span>
+                    <a href="#" class="nav-link no-dropdown" id="logoutBtn" style="color: #999;">
+                        退出
+                    </a>
+                    <span class="nav-divider">|</span>
+                </div>
+                
+                <!-- 我的订单 - 有下拉 -->
+                <div class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">我的订单</a>
+                    <span class="nav-divider">|</span>
+                    <div class="dropdown-menu">
+                        <a href="order-pending-payment.html" target="_top">待付款</a>
+                        <a href="order-pending-shipment.html" target="_top">待发货</a>
+                        <a href="order-pending-receipt.html" target="_top">待收货</a>
+                        <a href="order-completed.html" target="_top">已完成</a>
+                    </div>
+                </div>
+                
+                <!-- 个人中心 - 有下拉 -->
+                <div class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">个人中心</a>
+                    <span class="nav-divider">|</span>
+                    <div class="dropdown-menu">
+                        <a href="shoucang.html" target="_top">收藏</a>
+                        <a href="gouwuche.html" target="_top">购物车</a>
+                        <a href="#">账户设置</a>
+                        <a href="security-center.html" target="_top">安全中心</a>
+                    <a href="#" id="logoutLink">退出登录</a>
+                    </div>
+                </div>
+                
+                <!-- 客户服务 - 有下拉 -->
+                <div class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">客户服务</a>
+                    <span class="nav-divider">|</span>
+                    <div class="dropdown-menu">
+                        <a href="customer-service/help-center.html" target="_top">帮助中心</a>
+                        <a href="customer-service/complaint.html" target="_top">投诉建议</a>
+                        <a href="customer-service/return-policy.html" target="_top">退换货政策</a>
+                    </div>
+                </div>
+                
+                <!-- 网站导航 - 有下拉 -->
+                <div class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">网站导航</a>
+                    <span class="nav-divider">|</span>
+                    <div class="dropdown-menu">
+                        <a href="index.html" target="_top">首页</a>
+                        <a href="category.html" target="_top">商品分类</a>
+                        <a href="promotions.html" target="_top">促销活动</a>
+                        <a href="about.html" target="_top">关于我们</a>
+                    </div>
+                </div>
+                
+                <!-- 手机端 - 有下拉 -->
+                <div class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">手机端</a>
+                    <span class="nav-divider">|</span>
+                    <div class="dropdown-menu">
+                        <a href="#" class="test-phase-btn">APP下载</a>
+                        <a href="#" class="test-phase-btn">微信公众号</a>
+                        <a href="#" class="test-phase-btn">小程序</a>
+                    </div>
+                </div>
+                
+                <!-- 卖家中心 - 有下拉 -->
+                <div class="nav-item has-dropdown">
+                    <a href="#" class="nav-link">卖家中心</a>
+                    <div class="dropdown-menu">
+                        <a href="ruzhu.html" target="_top">入驻流程</a>
+                        <a href="merchant-login.html" target="_top" id="merchantDashboardLink">商品后台</a>
+                        <a href="rules.html" target="_top">规则中心</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- 搜索栏 -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="搜索商品...">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <script>
+        // 显示商家后台验证弹窗
+        function showMerchantAuthModal() {
+            // 如果是在iframe中，通知父页面显示弹窗
+            if (window.parent !== window) {
+                window.parent.postMessage({ type: 'showMerchantAuthModal' }, '*');
+                return;
+            }
+            
+            // 创建遮罩层
+            const overlay = document.createElement('div');
+            overlay.className = 'auth-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            // 创建弹窗内容
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                background-color: #fff;
+                border-radius: 12px;
+                padding: 30px;
+                width: 90%;
+                max-width: 400px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                animation: slideUp 0.3s ease;
+            `;
+            
+            // 弹窗标题
+            const title = document.createElement('h3');
+            title.textContent = '商品后台验证';
+            title.style.cssText = `
+                margin: 0 0 20px 0;
+                font-size: 18px;
+                font-weight: 600;
+                color: #333;
+                text-align: center;
+            `;
+            
+            // 表单容器
+            const form = document.createElement('form');
+            form.style.cssText = 'display: flex; flex-direction: column; gap: 15px;';
+            
+            // 用户名输入
+            const usernameGroup = createFormGroup('用户名', 'text', 'auth-username', '请输入入驻时的用户名');
+            form.appendChild(usernameGroup);
+            
+            // 密码输入
+            const passwordGroup = createFormGroup('密码', 'password', 'auth-password', '请输入入驻时的密码');
+            form.appendChild(passwordGroup);
+            
+            // 手机号输入
+            const phoneGroup = createFormGroup('手机号', 'tel', 'auth-phone', '请输入入驻时的手机号');
+            form.appendChild(phoneGroup);
+            
+            // 按钮容器
+            const btnContainer = document.createElement('div');
+            btnContainer.style.cssText = 'display: flex; gap: 12px; margin-top: 10px;';
+            
+            // 取消按钮
+            const cancelBtn = document.createElement('button');
+            cancelBtn.type = 'button';
+            cancelBtn.textContent = '取消';
+            cancelBtn.style.cssText = `
+                flex: 1;
+                padding: 12px;
+                border: 1px solid #d9d9d9;
+                border-radius: 6px;
+                background-color: #fff;
+                color: #666;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all 0.2s;
+            `;
+            cancelBtn.addEventListener('click', function() {
+                document.body.removeChild(overlay);
+            });
+            
+            // 验证按钮
+            const submitBtn = document.createElement('button');
+            submitBtn.type = 'button';
+            submitBtn.textContent = '验证登录';
+            submitBtn.style.cssText = `
+                flex: 1;
+                padding: 12px;
+                border: none;
+                border-radius: 6px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: #fff;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s;
+            `;
+            submitBtn.addEventListener('click', function() {
+                validateMerchantAuth(overlay);
+            });
+            
+            btnContainer.appendChild(cancelBtn);
+            btnContainer.appendChild(submitBtn);
+            form.appendChild(btnContainer);
+            
+            // 错误提示
+            const errorMsg = document.createElement('div');
+            errorMsg.id = 'auth-error-msg';
+            errorMsg.style.cssText = `
+                margin-top: 15px;
+                padding: 10px;
+                background-color: #fff5f5;
+                border: 1px solid #ffccc7;
+                border-radius: 4px;
+                color: #ff4d4f;
+                font-size: 12px;
+                text-align: center;
+                display: none;
+            `;
+            form.appendChild(errorMsg);
+            
+            modal.appendChild(title);
+            modal.appendChild(form);
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            // 添加动画样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes slideUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // 搜索功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-input');
+            const searchButton = document.querySelector('.search-button');
+            
+            function performSearch() {
+                const keyword = searchInput.value.trim();
+                if (keyword) {
+                    window.parent.postMessage({ type: 'search', keyword: keyword }, '*');
+                } else {
+                    window.parent.postMessage({ type: 'navigate', url: 'index.html' }, '*');
+                }
+            }
+            
+            searchButton.addEventListener('click', performSearch);
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // 测试阶段提示框功能
+            const testPhaseBtns = document.querySelectorAll('.test-phase-btn');
+            testPhaseBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showTestPhaseModal();
+                });
+            });
+            
+            function showTestPhaseModal() {
+                let modal = document.getElementById('testPhaseModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    return;
+                }
+                
+                const overlay = document.createElement('div');
+                overlay.id = 'testPhaseModal';
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    animation: fadeIn 0.3s ease;
+                `;
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.cssText = `
+                    background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%);
+                    padding: 30px 40px;
+                    border-radius: 16px;
+                    text-align: center;
+                    max-width: 320px;
+                    width: 90%;
+                    box-shadow: 0 10px 40px rgba(255, 182, 193, 0.4);
+                    animation: slideUp 0.3s ease;
+                `;
+                
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-info-circle';
+                icon.style.cssText = `
+                    font-size: 48px;
+                    color: #fff;
+                    margin-bottom: 16px;
+                `;
+                
+                const message = document.createElement('p');
+                message.textContent = '该商品属于测试阶段，请耐心等待产品上线';
+                message.style.cssText = `
+                    color: #fff;
+                    font-size: 16px;
+                    line-height: 1.6;
+                    margin: 0;
+                    font-weight: 500;
+                `;
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '知道了';
+                closeBtn.style.cssText = `
+                    margin-top: 24px;
+                    padding: 10px 30px;
+                    background: #fff;
+                    border: none;
+                    border-radius: 20px;
+                    color: #FF69B4;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                `;
+                
+                closeBtn.addEventListener('click', function() {
+                    overlay.style.display = 'none';
+                });
+                
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === overlay) {
+                        overlay.style.display = 'none';
+                    }
+                });
+                
+                modalContent.appendChild(icon);
+                modalContent.appendChild(message);
+                modalContent.appendChild(closeBtn);
+                overlay.appendChild(modalContent);
+                document.body.appendChild(overlay);
+            }
+        });
+        function createFormGroup(labelText, inputType, inputId, placeholder) {
+            const group = document.createElement('div');
+            group.style.cssText = 'display: flex; flex-direction: column;';
+            
+            const label = document.createElement('label');
+            label.textContent = labelText;
+            label.setAttribute('for', inputId);
+            label.style.cssText = `
+                margin-bottom: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                color: #666;
+            `;
+            
+            const input = document.createElement('input');
+            input.type = inputType;
+            input.id = inputId;
+            input.placeholder = placeholder;
+            input.style.cssText = `
+                padding: 10px 12px;
+                border: 1px solid #d9d9d9;
+                border-radius: 6px;
+                font-size: 14px;
+                outline: none;
+                transition: border-color 0.2s;
+            `;
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '#667eea';
+            });
+            input.addEventListener('blur', function() {
+                this.style.borderColor = '#d9d9d9';
+            });
+            
+            group.appendChild(label);
+            group.appendChild(input);
+            return group;
+        }
+        
+        // 验证商家身份
+        function validateMerchantAuth(overlay) {
+            const username = document.getElementById('auth-username').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
+            const errorMsg = document.getElementById('auth-error-msg');
+            
+            // 获取入驻时保存的商家信息
+            const storeInfo = localStorage.getItem('store_info');
+            if (!storeInfo) {
+                showAuthError(errorMsg, '未找到入驻信息，请先完成入驻');
+                return;
+            }
+            
+            const storeData = JSON.parse(storeInfo);
+            
+            // 验证信息
+            if (!username || !password || !phone) {
+                showAuthError(errorMsg, '请填写完整的验证信息');
+                return;
+            }
+            
+            // 检查是否匹配
+            if (username === storeData.username && 
+                password === storeData.password && 
+                phone === storeData.phone) {
+                // 验证成功，跳转到商家后台
+                document.body.removeChild(overlay);
+                window.location.href = 'html/merchant-dashboard.html';
+            } else {
+                showAuthError(errorMsg, '用户名、密码或手机号不正确');
+            }
+        }
+        
+        // 显示验证错误
+        function showAuthError(errorElement, message) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            setTimeout(() => {
+                errorElement.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 检查登录状态并更新UI
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const username = localStorage.getItem('username');
+            
+            const guestNav = document.getElementById('guestNav');
+            const userNav = document.getElementById('userNav');
+            const displayUsername = document.getElementById('displayUsername');
+            
+            if (isLoggedIn && username) {
+                // 已登录状态
+                guestNav.style.display = 'none';
+                userNav.style.display = 'flex';
+                displayUsername.textContent = username;
+            } else {
+                // 未登录状态
+                guestNav.style.display = 'flex';
+                userNav.style.display = 'none';
+            }
+        }
+        
+        // 退出登录
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('user_id');
+                localStorage.removeItem('username');
+                localStorage.removeItem('isLoggedIn');
+                checkLoginStatus();
+                
+                // 通知父页面更新（如果是iframe）
+                if (window.parent !== window) {
+                    window.parent.postMessage({ type: 'logout' }, '*');
+                }
+                
+                // 跳转到首页
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // 需要登录才能访问的页面列表
+        const REQUIRES_LOGIN_PAGES = [
+            'shoucang.html', 'gouwuche.html', 
+            'order-pending-payment.html', 'order-pending-shipment.html',
+            'order-pending-receipt.html', 'order-completed.html',
+            'security-center.html', 'ditu.html'
+        ];
+        
+        // 检查是否需要登录
+        function requiresLogin(url) {
+            if (!url) return false;
+            // 检查是否包含需要登录的页面
+            return REQUIRES_LOGIN_PAGES.some(page => url.includes(page));
+        }
+        
+        // 全局点击拦截器
+        function setupClickInterceptor() {
+            document.addEventListener('click', function(e) {
+                // 获取点击的元素
+                let target = e.target;
+                
+                // 向上查找是否是链接
+                while (target && target !== document) {
+                    if (target.tagName === 'A') {
+                        break;
+                    }
+                    target = target.parentElement;
+                }
+                
+                // 如果点击的是链接
+                if (target && target.tagName === 'A') {
+                    const href = target.getAttribute('href');
+                    const targetAttr = target.getAttribute('target');
+                    
+                    // 检查是否需要登录
+                    if (requiresLogin(href)) {
+                        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                        
+                        if (!isLoggedIn) {
+                            // 未登录，阻止跳转并弹出登录
+                            e.preventDefault();
+                            e.stopPropagation();
+                            console.log('拦截跳转:', href, '需要登录');
+                            
+                            // 通知父页面显示登录弹窗
+                            if (window.parent !== window) {
+                                window.parent.postMessage({ 
+                                    type: 'showLoginModal',
+                                    redirectUrl: href 
+                                }, '*');
+                            } else {
+                                // 如果不是iframe，直接跳转登录页面
+                                window.location.href = 'denglu.html?redirect=' + encodeURIComponent(href);
+                            }
+                            
+                            return false;
+                        }
+                    }
+                }
+            }, true);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            checkLoginStatus();
+            
+            // 绑定退出按钮事件
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+            
+            // 绑定下拉菜单中的退出登录链接
+            const logoutLink = document.getElementById('logoutLink');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+            
+            // 读取并显示默认收货地址
+            loadDefaultAddress();
+            
+            // 设置全局点击拦截器
+            setupClickInterceptor();
+            
+            console.log('顶部导航栏初始化完成');
+        });
+        
+        // 加载默认收货地址
+        function loadDefaultAddress() {
+            const locationSpan = document.querySelector('#locationLink span');
+            console.log('loadDefaultAddress被调用，locationSpan:', locationSpan);
+            if (!locationSpan) return;
+            
+            try {
+                const defaultAddress = localStorage.getItem('defaultAddress');
+                console.log('读取defaultAddress:', defaultAddress);
+                
+                if (defaultAddress) {
+                    const addr = JSON.parse(defaultAddress);
+                    console.log('解析后的地址:', addr);
+                    // 显示城市信息，如果详细地址存在则截取显示
+                    let displayText = addr.city || addr.district || '未设置';
+                    if (addr.detail && addr.detail.length > 0) {
+                        // 截取详细地址前8个字符
+                        displayText = addr.detail.substring(0, 8) + (addr.detail.length > 8 ? '...' : '');
+                    }
+                    console.log('显示文本:', displayText);
+                    locationSpan.textContent = displayText;
+                    locationSpan.style.color = '#667eea';
+                    locationSpan.style.fontWeight = '600';
+                } else {
+                    // 没有默认地址，重置为默认文本
+                    console.log('没有默认地址，重置显示');
+                    locationSpan.textContent = '收货地址';
+                    locationSpan.style.color = '';
+                    locationSpan.style.fontWeight = '';
+                }
+            } catch (e) {
+                console.log('读取默认地址失败:', e);
+                // 出错时也重置为默认文本
+                locationSpan.textContent = '收货地址';
+                locationSpan.style.color = '';
+                locationSpan.style.fontWeight = '';
+            }
+        }
+        
+        // 页面加载后立即执行
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                loadDefaultAddress();
+            });
+        } else {
+            // DOM已经加载完成
+            loadDefaultAddress();
+        }
+        
+        // 监听localStorage变化（用于跨页面通信）
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'defaultAddress') {
+                loadDefaultAddress();
+            }
+        });
+        
+        // 监听来自地图页面的消息
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'addressUpdated') {
+                loadDefaultAddress();
+            }
+            // 处理来自首页的初始化地址消息
+            if (event.data && event.data.type === 'initAddress') {
+                loadDefaultAddress();
+            }
+        });
+    </script>
+    
+    <!-- 商家入驻数据存储模块 -->
+    <script src="..\js\merchant-store.js"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下方大盒子组件</title>
+    <link rel="stylesheet" href="/css/xiahezi.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 下方大盒子容器 -->
+    <div class="bottom-container">
+        <!-- 顶部区域 -->
+        <div class="bottom-header">
+            <!-- 心形图标 -->
+            <div class="heart-icon-wrapper">
+                <i class="fas fa-heart heart-icon"></i>
+            </div>
+            
+            <!-- 标题区域 -->
+            <div class="header-title">
+                <h2 class="main-title">猜你喜欢</h2>
+                <p class="sub-title">精选好物推荐</p>
+            </div>
+        </div>
+        
+        <!-- 主内容区域 - 可滚动 -->
+        <div class="bottom-content">
+            <!-- 上子盒子 - 商品展示区域 -->
+            <div class="products-box">
+                <!-- 分页导航区域 -->
+                <div class="pagination-container" role="navigation" aria-label="分页导航">
+                    <button 
+                        class="pagination-btn active" 
+                        data-page="1" 
+                        aria-current="page"
+                        tabindex="0"
+                        aria-label="第1页，当前页"
+                    >
+                        1
+                    </button>
+                    <button 
+                        class="pagination-btn" 
+                        data-page="2" 
+                        tabindex="0"
+                        aria-label="第2页"
+                    >
+                        2
+                    </button>
+                    <button 
+                        class="pagination-btn" 
+                        data-page="3" 
+                        tabindex="0"
+                        aria-label="第3页"
+                    >
+                        3
+                    </button>
+                    <button 
+                        class="pagination-btn" 
+                        data-page="4" 
+                        tabindex="0"
+                        aria-label="第4页"
+                    >
+                        4
+                    </button>
+                    <button 
+                        class="pagination-btn" 
+                        data-page="5" 
+                        tabindex="0"
+                        aria-label="第5页"
+                    >
+                        5
+                    </button>
+                    <button 
+                        class="pagination-btn" 
+                        data-page="6" 
+                        tabindex="0"
+                        aria-label="第6页"
+                    >
+                        6
+                    </button>
+                </div>
+                
+                <!-- 商品网格 -->
+                <div class="products-grid" id="productsGrid">
+                    <!-- 商品将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 分隔线 -->
+            <hr class="section-divider">
+            
+            <!-- 下子盒子 - 平台保障信息 -->
+            <div class="guarantee-box">
+                <div class="guarantee-grid">
+                    <!-- 保障项 1 -->
+                    <div class="guarantee-item">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="guarantee-title">正品保障</h4>
+                        <p class="guarantee-desc">100%正品保证，假一赔十</p>
+                    </div>
+                    
+                    <!-- 保障项 2 -->
+                    <div class="guarantee-item">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h4 class="guarantee-title">极速发货</h4>
+                        <p class="guarantee-desc">当日订单，次日送达</p>
+                    </div>
+                    
+                    <!-- 保障项 3 -->
+                    <div class="guarantee-item">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-undo"></i>
+                        </div>
+                        <h4 class="guarantee-title">7天无理由</h4>
+                        <p class="guarantee-desc">不满意包退换</p>
+                    </div>
+                    
+                    <!-- 保障项 4 -->
+                    <div class="guarantee-item">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <h4 class="guarantee-title">24小时客服</h4>
+                        <p class="guarantee-desc">全天候在线服务</p>
+                    </div>
+                    
+                    <!-- 保障项 5 -->
+                    <div class="guarantee-item">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4 class="guarantee-title">安全支付</h4>
+                        <p class="guarantee-desc">多重加密保护</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 服务条款区域 -->
+            <div class="service-terms">
+                <div class="terms-grid">
+                    <!-- 关于我们 -->
+                    <div class="terms-item">
+                        <h4>关于我们</h4>
+                        <ul>
+                            <li><a href="#">公司简介</a></li>
+                            <li><a href="#">联系我们</a></li>
+                            <li><a href="#">加入我们</a></li>
+                            <li><a href="#">新闻动态</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 购物指南 -->
+                    <div class="terms-item">
+                        <h4>购物指南</h4>
+                        <ul>
+                            <li><a href="#">购物流程</a></li>
+                            <li><a href="#">会员介绍</a></li>
+                            <li><a href="#">积分说明</a></li>
+                            <li><a href="#">优惠券使用</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 售后服务 -->
+                    <div class="terms-item">
+                        <h4>售后服务</h4>
+                        <ul>
+                            <li><a href="#">退换货政策</a></li>
+                            <li><a href="#">保修服务</a></li>
+                            <li><a href="#">维修进度查询</a></li>
+                            <li><a href="#">常见问题</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 法律条款 -->
+                    <div class="terms-item">
+                        <h4>法律条款</h4>
+                        <ul>
+                            <li><a href="#">用户协议</a></li>
+                            <li><a href="#">隐私政策</a></li>
+                            <li><a href="#">版权声明</a></li>
+                            <li><a href="#">知识产权</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 版权信息 -->
+                <div class="copyright">
+                    © 2024 电商平台 版权所有 | 京ICP备12345678号
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 引入外部JavaScript文件 -->
+    <script src="/js/xiahezi.js"></script>
+</body>
+</html>

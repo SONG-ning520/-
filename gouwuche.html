@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <link rel="stylesheet" href="/css/gouwuche.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-top">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>电商平台</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="gouwuche.html" class="active">购物车</a>
+                <a href="shoucang.html">收藏</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-shopping-cart"></i> 购物车</h1>
+            <span class="count" id="cartCount">共 0 件商品</span>
+        </div>
+
+        <!-- 空状态提示 -->
+        <div class="empty-state" id="emptyState">
+            <i class="fas fa-shopping-cart"></i>
+            <p>购物车是空的</p>
+            <a href="index.html" class="btn-primary">去逛逛</a>
+        </div>
+
+        <!-- 购物车列表 -->
+        <div class="cart-container" id="cartContainer">
+            <div class="cart-list" id="cartList"></div>
+
+            <!-- 结算栏 -->
+            <div class="cart-footer">
+                <div class="footer-left">
+                    <label class="select-all">
+                        <input type="checkbox" id="selectAll" checked>
+                        <span>全选</span>
+                    </label>
+                    <button class="btn-clear" onclick="clearCart()">
+                        <i class="far fa-trash-alt"></i> 清空购物车
+                    </button>
+                </div>
+                <div class="footer-right">
+                    <div class="total-info">
+                        <span class="total-label">合计：</span>
+                        <span class="total-price" id="totalPrice">¥0</span>
+                    </div>
+                    <button class="btn-checkout" onclick="checkout()">
+                        去结算
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <p>电商平台 购物车</p>
+    </footer>
+
+    <script src="/js/gouwuche.js"></script>
+</body>
+</html>
+

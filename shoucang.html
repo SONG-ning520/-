@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的收藏</title>
+    <link rel="stylesheet" href="/css/shoucang.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-top">
+            <a href="index.html" class="logo">
+                <i class="fas fa-shopping-bag"></i>
+                <span>电商平台</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="gouwuche.html">购物车</a>
+                <a href="shoucang.html" class="active">收藏</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1><i class="fas fa-heart"></i> 我的收藏</h1>
+            <div class="header-right">
+                <span class="count" id="favCount">共 0 件商品</span>
+                <button class="btn-clear" id="clearFavoritesBtn" onclick="clearAllFavorites()">
+                    <i class="fas fa-trash"></i> 清空收藏
+                </button>
+            </div>
+        </div>
+
+        <!-- 空状态提示 -->
+        <div class="empty-state" id="emptyState">
+            <i class="far fa-heart"></i>
+            <p>暂无收藏商品</p>
+            <a href="index.html" class="btn-primary">去逛逛</a>
+        </div>
+
+        <!-- 收藏列表 -->
+        <div class="favorites-list" id="favoritesList"></div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <p>电商平台 我的收藏</p>
+    </footer>
+
+    <script src="/js/shoucang.js"></script>
+</body>
+</html>
+

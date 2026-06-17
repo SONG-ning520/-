@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情</title>
+    <link rel="stylesheet" href="/css/商品详情.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <h1 class="logo">电商平台</h1>
+          
+            <div class="nav-center">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="#">商品分类</a></li>
+                        <li><a href="#">促销活动</a></li>
+                        <li><a href="#">会员中心</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="nav-right">
+                <button class="cart-btn" aria-label="购物车">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button class="login-btn" aria-label="登录">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 - 双列布局 -->
+    <main class="main-content">
+        <!-- 左侧盒子 -->
+        <div class="left-box">
+            <!-- 上部子盒子 - 轮播图 -->
+            <div class="carousel-box">
+                <div class="carousel-wrapper" id="carouselWrapper">
+                    <!-- 轮播项 - 由JS动态填充 -->
+                    <div class="carousel-item active" data-index="0">
+                        <img src="" alt="商品主图" id="mainProductImage">
+                    </div>
+                </div>
+                
+                <!-- 轮播导航按钮 -->
+                <button class="carousel-prev" id="carouselPrev" aria-label="上一张">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-next" id="carouselNext" aria-label="下一张">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <!-- 轮播指示器 -->
+                <div class="carousel-indicators" id="carouselIndicators">
+                    <button class="indicator active" data-index="0" aria-label="第1张"></button>
+                </div>
+                
+                <!-- 缩略图导航 -->
+                <div class="thumbnail-nav" id="thumbnailNav">
+                    <button class="thumbnail active" data-index="0" aria-label="缩略图1">
+                        <img src="" alt="缩略图1">
+                    </button>
+                </div>
+            </div>
+
+            <!-- 下部子盒子 - 操作按钮 -->
+            <div class="action-box">
+                <div class="quantity-control">
+                    <button class="qty-btn" id="qtyMinus" aria-label="减少数量">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="10" aria-label="购买数量">
+                    <button class="qty-btn" id="qtyPlus" aria-label="增加数量">+</button>
+                </div>
+                <button class="fav-btn-action" id="addFavBtn" aria-label="加入收藏">
+                    <i class="far fa-heart"></i>
+                    <span>收藏</span>
+                </button>
+                <button class="cart-btn-action" id="addCartBtn" aria-label="加入购物车">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>加入购物车</span>
+                </button>
+                <button class="buy-btn-action" id="buyNowBtn" aria-label="立即支付">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>立即支付</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 右侧盒子 -->
+        <div class="right-box">
+            <!-- 上部子盒子 - 用户反馈信息 -->
+            <div class="feedback-box">
+                <div class="section-header">
+                    <h3 class="section-title">用户评价</h3>
+                    <span class="review-count" id="reviewCount">0条评价</span>
+                </div>
+                <div class="reviews-scroll" id="reviewsScroll">
+                    <!-- 评价项由JS动态填充 -->
+                    <div class="review-item placeholder">
+                        <div class="review-header">
+                            <div class="user-info">
+                                <div class="user-avatar"><i class="fas fa-user"></i></div>
+                                <div class="user-details">
+                                    <span class="user-name">***用户</span>
+                                    <div class="review-rating">
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <i class="fas fa-star filled"></i>
+                                        <span>5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="review-date">--</span>
+                        </div>
+                        <p class="review-content">评价内容加载中...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 下部子盒子 - 商品详情内容（垂直滚动） -->
+            <div class="details-box">
+                <div class="section-header">
+                    <h3 class="section-title">商品详情</h3>
+                </div>
+                <div class="details-scroll" id="detailsScroll">
+                    <!-- 商品描述 -->
+                    <div class="product-description" id="productDescription">
+                        <p>商品描述加载中...</p>
+                    </div>
+                    
+                    <!-- 商品参数表 -->
+                    <div class="specs-table">
+                        <h4>产品参数</h4>
+                        <table id="specsTable">
+                            <tr><td class="spec-label">品牌</td><td class="spec-value">--</td></tr>
+                        </table>
+                    </div>
+                    
+                    <!-- 详情图片 -->
+                    <div class="detail-images" id="detailImages">
+                        <div class="detail-image-wrapper">
+                            <img src="" alt="详情图">
+                            <div class="image-caption">图片加载中...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 购物车提示弹窗 -->
+    <div class="cart-toast" id="cartToast" role="alert" aria-live="polite">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span>已成功加入购物车</span>
+        </div>
+    </div>
+
+    <!-- 错误提示 -->
+    <div class="error-overlay" id="errorOverlay" style="display:none;">
+        <div class="error-content">
+            <i class="fas fa-exclamation-circle"></i>
+            <h2 id="errorTitle">商品不存在</h2>
+            <p id="errorMessage">请返回首页重新选择商品</p>
+            <button onclick="window.history.back()" class="back-btn">返回首页</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/商品详情.js"></script>
+</body>
+</html>
+

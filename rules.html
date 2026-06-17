@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>规则中心 - 电商平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+            min-height: 100vh;
+        }
+
+        .rules-page {
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #764ba2;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .breadcrumb .current {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .page-header h1 i {
+            font-size: 32px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .rules-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .rules-section h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .rules-section h2 i {
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .rules-section h3 {
+            font-size: 18px;
+            color: #444;
+            margin: 20px 0 12px;
+            padding-left: 12px;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .rules-section p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .rules-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rules-section li {
+            position: relative;
+            padding-left: 24px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .rules-section li::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .rules-section li strong {
+            color: #333;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .important-notice p {
+            margin: 0;
+            color: #dc2626;
+            font-weight: 500;
+        }
+
+        .back-to-home {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-home-btn i {
+            font-size: 18px;
+        }
+
+        .back-home-btn:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .rules-section {
+                padding: 20px;
+            }
+
+            .breadcrumb {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="rules-page">
+        <div class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span class="current">规则中心</span>
+        </div>
+
+        <div class="page-header">
+            <h1><i class="fas fa-book-open"></i> 商家规则中心</h1>
+            <p>所有入驻商家必须遵守的平台规则</p>
+        </div>
+
+        <div class="main-content">
+            <section class="rules-section">
+                <h2><i class="fas fa-user-check"></i> 入驻资格要求</h2>
+                <ul>
+                    <li><strong>主体资质：</strong>必须是合法注册的企业、个体工商户或具备相关资质的自然人</li>
+                    <li><strong>经营资质：</strong>需提供与经营类目相关的营业执照、许可证等资质证明</li>
+                    <li><strong>信用要求：</strong>无严重违法违规记录，信用良好</li>
+                    <li><strong>缴纳保证金：</strong>根据经营类目缴纳相应金额的保证金</li>
+                </ul>
+                <div class="important-notice">
+                    <p><i class="fas fa-exclamation-circle"></i> 平台有权对商家资质进行审核，不符合要求者将拒绝入驻</p>
+                </div>
+            </section>
+
+            <section class="rules-section">
+                <h2><i class="fas fa-box"></i> 商品发布规则</h2>
+                <h3>商品信息规范</h3>
+                <ul>
+                    <li><strong>标题规范：</strong>商品标题需真实、准确、完整，不得包含虚假信息或误导性描述</li>
+                    <li><strong>图片规范：</strong>商品图片需清晰、真实、无水印，不得使用侵权图片</li>
+                    <li><strong>描述规范：</strong>商品描述需详细、准确，与实际商品相符</li>
+                    <li><strong>价格规范：</strong>商品价格需真实合理，不得虚构原价或进行价格欺诈</li>
+                </ul>
+
+                <h3>禁止发布的商品</h3>
+                <ul>
+                    <li>法律法规禁止销售的商品</li>
+                    <li>假冒伪劣商品、侵权商品</li>
+                    <li>色情、暴力、反动等违法违规商品</li>
+                    <li>未经授权的品牌商品</li>
+                    <li>其他违反平台规则的商品</li>
+                </ul>
+            </section>
+
+            <section class="rules-section">
+                <h2><i class="fas fa-shipping-fast"></i> 交易与物流规则</h2>
+                <h3>订单处理</h3>
+                <ul>
+                    <li><strong>发货时限：</strong>普通订单需在48小时内发货，特殊商品需在约定时间内发货</li>
+                    <li><strong>发货规范：</strong>需使用正规物流渠道，提供真实有效的运单号</li>
+                    <li><strong>订单取消：</strong>商家无正当理由不得随意取消已付款订单</li>
+                </ul>
+
+                <h3>物流服务</h3>
+                <ul>
+                    <li>需提供准确的物流信息，确保买家可追踪</li>
+                    <li>积极处理物流异常情况，及时与买家沟通</li>
+                    <li>支持7天无理由退换货服务</li>
+                </ul>
+            </section>
+
+            <section class="rules-section">
+                <h2><i class="fas fa-headset"></i> 售后服务规则</h2>
+                <ul>
+                    <li><strong>退换货服务：</strong>严格执行7天无理由退换货政策，特殊商品除外</li>
+                    <li><strong>售后响应：</strong>买家发起售后申请后，需在24小时内响应处理</li>
+                    <li><strong>纠纷处理：</strong>积极配合平台处理售后纠纷，提供相关证据</li>
+                    <li><strong>退款时限：</strong>确认退货后需在48小时内完成退款</li>
+                </ul>
+            </section>
+
+            <section class="rules-section">
+                <h2><i class="fas fa-ban"></i> 违规处理规则</h2>
+                <h3>违规类型</h3>
+                <ul>
+                    <li><strong>一般违规：</strong>商品信息不规范、延迟发货、轻微售后问题等</li>
+                    <li><strong>严重违规：</strong>销售假冒伪劣商品、欺诈行为、严重侵权等</li>
+                </ul>
+
+                <h3>处罚措施</h3>
+                <ul>
+                    <li><strong>警告：</strong>首次轻微违规给予警告</li>
+                    <li><strong>扣分：</strong>根据违规情节扣除相应分值</li>
+                    <li><strong>商品下架：</strong>违规商品强制下架</li>
+                    <li><strong>店铺限流：</strong>限制店铺曝光和流量</li>
+                    <li><strong>罚款：</strong>根据违规情节处以相应金额罚款</li>
+                    <li><strong>清退：</strong>严重违规或累计扣分达到阈值将被清退</li>
+                </ul>
+
+                <div class="important-notice">
+                    <p><i class="fas fa-exclamation-circle"></i> 商家被清退后，保证金将根据违规情况进行扣除，剩余部分在规定时间内退还</p>
+                </div>
+            </section>
+
+            <section class="rules-section">
+                <h2><i class="fas fa-handshake"></i> 商家义务</h2>
+                <ul>
+                    <li>遵守国家法律法规和平台规则</li>
+                    <li>提供优质商品和服务，维护平台声誉</li>
+                    <li>积极配合平台的各项管理工作</li>
+                    <li>保护消费者权益，妥善处理售后问题</li>
+                    <li>按时缴纳各项费用，包括佣金、保证金等</li>
+                    <li>及时更新店铺信息和商品信息</li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="back-to-home">
+            <a href="index.html" class="back-home-btn">
+                <i class="fas fa-home"></i> 返回首页
+            </a>
+        </div>
+    </div>
+</body>
+</html>

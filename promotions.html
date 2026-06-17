@@ -1,0 +1,720 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>促销活动 - 电商平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+        }
+
+        .promotions-page {
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #764ba2;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .breadcrumb .current {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .banner-section {
+            margin-bottom: 40px;
+        }
+
+        .promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 40px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+
+        .promo-banner-content {
+            flex: 1;
+        }
+
+        .promo-banner h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .promo-banner p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 16px 20px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .countdown-item .number {
+            font-size: 28px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .countdown-item .label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .promo-banner .cta-btn {
+            display: inline-block;
+            padding: 14px 36px;
+            background: #fff;
+            color: #667eea;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .promo-banner .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .promo-banner-visual {
+            flex-shrink: 0;
+        }
+
+        .promo-banner-visual i {
+            font-size: 120px;
+            opacity: 0.3;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: #ff6b6b;
+        }
+
+        .promotions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .promo-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .promo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .promo-card-header {
+            padding: 24px;
+            color: #fff;
+            position: relative;
+        }
+
+        .promo-card-header.flash-sale {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .promo-card-header.discount {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .promo-card-header.gift {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .promo-card-header.coupon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .promo-card-header h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .promo-card-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .promo-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .promo-card-body {
+            padding: 24px;
+        }
+
+        .promo-details {
+            margin-bottom: 20px;
+        }
+
+        .promo-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .promo-detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .promo-detail-item i {
+            color: #667eea;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        .promo-detail-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .promo-detail-item span {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .promo-participate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .promo-participate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .rules-section {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .rules-section h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rules-section h3 i {
+            color: #667eea;
+        }
+
+        .rules-list {
+            list-style: none;
+        }
+
+        .rules-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .rules-list li:last-child {
+            border-bottom: none;
+        }
+
+        .rules-list li i {
+            color: #667eea;
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        .rules-list li span {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .back-home-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .back-home-btn i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .promo-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .promo-banner-visual {
+                display: none;
+            }
+
+            .countdown {
+                justify-content: center;
+            }
+
+            .promotions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .breadcrumb {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="promotions-page">
+        <div class="breadcrumb">
+            <a href="index.html">首页</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span class="current">促销活动</span>
+        </div>
+
+        <div class="page-header">
+            <h1><i class="fas fa-tags"></i> 促销活动</h1>
+            <p>精彩优惠活动，错过不再有</p>
+        </div>
+
+        <div class="main-content">
+            <section class="banner-section">
+                <div class="promo-banner">
+                    <div class="promo-banner-content">
+                        <h2>🎉 年中购物狂欢节</h2>
+                        <p>全场商品低至5折起，更有百万优惠券等你来抢</p>
+                        <div class="countdown">
+                            <div class="countdown-item">
+                                <span class="number" id="days">07</span>
+                                <span class="label">天</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="number" id="hours">12</span>
+                                <span class="label">时</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="number" id="minutes">35</span>
+                                <span class="label">分</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="number" id="seconds">48</span>
+                                <span class="label">秒</span>
+                            </div>
+                        </div>
+                        <a href="#" class="cta-btn">立即参与</a>
+                    </div>
+                    <div class="promo-banner-visual">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                </div>
+            </section>
+
+            <h2 class="section-title">
+                <i class="fas fa-fire"></i> 热门活动
+            </h2>
+
+            <div class="promotions-grid">
+                <article class="promo-card">
+                    <div class="promo-card-header flash-sale">
+                        <span class="promo-badge">限时抢购</span>
+                        <h3><i class="fas fa-bolt"></i> 每日限时秒杀</h3>
+                        <p>每天10点、20点准时开抢</p>
+                    </div>
+                    <div class="promo-card-body">
+                        <div class="promo-details">
+                            <div class="promo-detail-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>活动时间段</strong>
+                                    <span>每日 10:00-12:00，20:00-22:00</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-percentage"></i>
+                                <div>
+                                    <strong>优惠力度</strong>
+                                    <span>商品价格直降30%-70%</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-box"></i>
+                                <div>
+                                    <strong>每场数量</strong>
+                                    <span>每款商品每场限抢2件</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-shipping-fast"></i>
+                                <div>
+                                    <strong>配送服务</strong>
+                                    <span>全场包邮（偏远地区除外）</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="promo-participate-btn" onclick="alert('即将跳转到秒杀专区')">
+                            立即参与
+                        </button>
+                    </div>
+                </article>
+
+                <article class="promo-card">
+                    <div class="promo-card-header discount">
+                        <span class="promo-badge">超级折扣</span>
+                        <h3><i class="fas fa-percent"></i> 满减优惠</h3>
+                        <p>满额立减，上不封顶</p>
+                    </div>
+                    <div class="promo-card-body">
+                        <div class="promo-details">
+                            <div class="promo-detail-item">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <strong>满200减30</strong>
+                                    <span>订单金额满200元立减30元</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <strong>满500减80</strong>
+                                    <span>订单金额满500元立减80元</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-tag"></i>
+                                <div>
+                                    <strong>满1000减200</strong>
+                                    <span>订单金额满1000元立减200元</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-gift"></i>
+                                <div>
+                                    <strong>叠加优惠</strong>
+                                    <span>可与优惠券叠加使用</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="promo-participate-btn" onclick="alert('即将跳转到满减专区')">
+                            立即参与
+                        </button>
+                    </div>
+                </article>
+
+                <article class="promo-card">
+                    <div class="promo-card-header gift">
+                        <span class="promo-badge">赠礼活动</span>
+                        <h3><i class="fas fa-gift"></i> 满赠好礼</h3>
+                        <p>购满指定金额赠送精美礼品</p>
+                    </div>
+                    <div class="promo-card-body">
+                        <div class="promo-details">
+                            <div class="promo-detail-item">
+                                <i class="fas fa-shopping-bag"></i>
+                                <div>
+                                    <strong>满299赠保温杯</strong>
+                                    <span>订单金额满299元赠送精美保温杯</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-shopping-bag"></i>
+                                <div>
+                                    <strong>满599赠背包</strong>
+                                    <span>订单金额满599元赠送时尚背包</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-shopping-bag"></i>
+                                <div>
+                                    <strong>满999赠行李箱</strong>
+                                    <span>订单金额满999元赠送旅行行李箱</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-star"></i>
+                                <div>
+                                    <strong>礼品展示</strong>
+                                    <span>所有礼品均品质保证，支持退换</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="promo-participate-btn" onclick="alert('即将跳转到满赠专区')">
+                            立即参与
+                        </button>
+                    </div>
+                </article>
+
+                <article class="promo-card">
+                    <div class="promo-card-header coupon">
+                        <span class="promo-badge">优惠券</span>
+                        <h3><i class="fas fa-ticket-alt"></i> 新人专享</h3>
+                        <p>注册即送超值新人礼包</p>
+                    </div>
+                    <div class="promo-card-body">
+                        <div class="promo-details">
+                            <div class="promo-detail-item">
+                                <i class="fas fa-gift"></i>
+                                <div>
+                                    <strong>新人优惠券包</strong>
+                                    <span>包含满99减20、满199减50等优惠券</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <strong>有效期</strong>
+                                    <span>领取后7天内有效</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-users"></i>
+                                <div>
+                                    <strong>适用人群</strong>
+                                    <span>从未下单的新用户</span>
+                                </div>
+                            </div>
+                            <div class="promo-detail-item">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    <strong>使用条件</strong>
+                                    <span>全场通用，部分特例商品除外</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="promo-participate-btn" onclick="alert('即将领取新人优惠券')">
+                            立即领取
+                        </button>
+                    </div>
+                </article>
+            </div>
+
+            <section class="rules-section">
+                <h3><i class="fas fa-info-circle"></i> 活动规则</h3>
+                <ul class="rules-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>所有促销活动可同时享受平台其他优惠，具体以结算页面显示为准</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>秒杀商品每人每款限购2件，同一账号、同一收货地址视为同一用户</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>满减优惠按最终实际支付金额计算，运费不计入满减金额</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>赠送礼品将在订单确认收货后7个工作日内发出，如有延迟请联系客服</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>优惠券需在有效期内使用，过期自动作废，不予补发</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>如发现恶意刷单、虚假交易等违规行为，平台有权取消相关订单及优惠</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>如有疑问，请在活动结束前联系在线客服，活动结束后将不再受理</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>本活动最终解释权归平台所有，如有调整请以平台最新公告为准</span>
+                    </li>
+                </ul>
+            </section>
+
+            <div class="back-to-home">
+                <a href="index.html" class="back-home-btn">
+                    <i class="fas fa-home"></i> 返回首页
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 7);
+            endDate.setHours(23, 59, 59, 999);
+
+            const diff = endDate - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        document.querySelectorAll('.promo-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('h3').textContent;
+                console.log('查看活动详情:', title);
+            });
+        });
+    </script>
+</body>
+</html>
+

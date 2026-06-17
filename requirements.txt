@@ -1,0 +1,7 @@
+# 电商平台后端 - Python依赖
+# 安装命令: pip install -r requirements.txt
+
+Flask>=3.0.0
+Flask-CORS>=4.0.0
+mysql-connector-python>=8.1.0
+python-dotenv>=1.0.0

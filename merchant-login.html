@@ -1,0 +1,717 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家后台登录</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .login-body {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .required::after {
+            content: ' *';
+            color: #ff4d4f;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            color: #999;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 45px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input:focus + .input-icon {
+            color: #667eea;
+        }
+
+        .form-input.error {
+            border-color: #ff4d4f;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: #667eea;
+        }
+
+        .error-message {
+            color: #ff4d4f;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-btn.loading {
+            pointer-events: none;
+        }
+
+        .login-btn .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .form-footer a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .tips-box {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .tips-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tips-list li {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips-list li::before {
+            content: '•';
+            position: absolute;
+            left: 8px;
+            color: #667eea;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-error {
+            background-color: #fff2f0;
+            border: 1px solid #ffccc7;
+            color: #ff4d4f;
+        }
+
+        .alert-success {
+            background-color: #f6ffed;
+            border: 1px solid #b7eb8f;
+            color: #52c41a;
+        }
+
+        .alert-warning {
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            color: #faad14;
+        }
+
+        .alert i {
+            margin-right: 8px;
+        }
+
+        .back-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: white;
+            color: #667eea;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .back-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        /* 成功动画 */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(82, 196, 26, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-overlay.active {
+            display: flex;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon i {
+            font-size: 50px;
+            color: #52c41a;
+        }
+
+        .success-text {
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            animation: fadeIn 0.5s ease 0.4s both;
+        }
+
+        .success-hint {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+            margin-top: 10px;
+            animation: fadeIn 0.5s ease 0.6s both;
+        }
+
+        /* 响应式 */
+        @media (max-width: 576px) {
+            .login-container {
+                max-width: 100%;
+            }
+
+            .login-header {
+                padding: 30px 20px;
+            }
+
+            .login-body {
+                padding: 30px 20px;
+            }
+
+            .back-home {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i> 返回首页
+    </a>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1><i class="fas fa-store"></i> 商家后台登录</h1>
+            <p>请输入您的入驻信息进行登录验证</p>
+        </div>
+
+        <div class="login-body">
+            <!-- 提示框 -->
+            <div id="alertBox" class="alert"></div>
+
+            <!-- 提示信息 -->
+            <div class="tips-box">
+                <div class="tips-title">
+                    <i class="fas fa-info-circle"></i> 登录提示
+                </div>
+                <ul class="tips-list">
+                    <li>请输入入驻时填写的用户名、密码和手机号</li>
+                    <li>三项信息必须与入驻时完全匹配才能登录</li>
+                    <li>如未入驻，请先完成商家入驻</li>
+                </ul>
+            </div>
+
+            <form id="loginForm">
+                <!-- 用户名 -->
+                <div class="form-group">
+                    <label class="form-label required">用户名</label>
+                    <div class="input-wrapper">
+                        <input type="text" 
+                               id="username" 
+                               class="form-input" 
+                               placeholder="请输入入驻时的用户名"
+                               maxlength="20"
+                               autocomplete="username">
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+                    <div class="error-message" id="usernameError">请输入用户名</div>
+                </div>
+
+                <!-- 密码 -->
+                <div class="form-group">
+                    <label class="form-label required">密码</label>
+                    <div class="input-wrapper">
+                        <input type="password" 
+                               id="password" 
+                               class="form-input" 
+                               placeholder="请输入入驻时的密码"
+                               maxlength="20"
+                               autocomplete="current-password">
+                        <i class="fas fa-lock input-icon"></i>
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="显示密码">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="passwordError">请输入密码</div>
+                </div>
+
+                <!-- 手机号 -->
+                <div class="form-group">
+                    <label class="form-label required">手机号</label>
+                    <div class="input-wrapper">
+                        <input type="tel" 
+                               id="phone" 
+                               class="form-input" 
+                               placeholder="请输入入驻时的手机号"
+                               maxlength="11"
+                               autocomplete="tel">
+                        <i class="fas fa-mobile-alt input-icon"></i>
+                    </div>
+                    <div class="error-message" id="phoneError">请输入正确的手机号</div>
+                </div>
+
+                <!-- 登录按钮 -->
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>登录验证</span>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <a href="ruzhu-form.html">
+                    <i class="fas fa-store-alt"></i> 还没有入驻？立即入驻
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功动画 -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="success-text">验证成功！</div>
+        <div class="success-hint">正在跳转至商家后台...</div>
+    </div>
+
+    <script src="/js/merchant-store.js"></script>
+    <script>
+        // 防止重复提交的标志
+        let isSubmitting = false;
+
+        // DOM加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initFormValidation();
+            initPasswordToggle();
+            initFormSubmit();
+            autoFocusFirstInput();
+        });
+
+        // 自动聚焦第一个输入框
+        function autoFocusFirstInput() {
+            document.getElementById('username').focus();
+        }
+
+        // 初始化表单验证
+        function initFormValidation() {
+            // 用户名验证
+            document.getElementById('username').addEventListener('input', function() {
+                validateField(this, 'usernameError', value => value.trim().length >= 3);
+            });
+
+            // 密码验证
+            document.getElementById('password').addEventListener('input', function() {
+                validateField(this, 'passwordError', value => value.length >= 6);
+            });
+
+            // 手机号验证
+            document.getElementById('phone').addEventListener('input', function() {
+                const value = this.value.replace(/\D/g, ''); // 只允许数字
+                this.value = value;
+                validateField(this, 'phoneError', value => merchantStore.validatePhone(value));
+            });
+
+            // 实时清除错误状态
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('error');
+                });
+            });
+        }
+
+        // 验证单个字段
+        function validateField(input, errorId, validator) {
+            const value = input.value;
+            const isValid = validator(value);
+            const errorElement = document.getElementById(errorId);
+
+            if (isValid) {
+                input.classList.remove('error');
+                input.classList.add('success');
+                errorElement.style.display = 'none';
+                return true;
+            } else {
+                input.classList.remove('success');
+                return false;
+            }
+        }
+
+        // 显示错误
+        function showError(input, errorId, message) {
+            const errorElement = document.getElementById(errorId);
+            input.classList.remove('success');
+            input.classList.add('error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            input.focus();
+        }
+
+        // 密码显示/隐藏切换
+        function initPasswordToggle() {
+            const toggleBtn = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const icon = toggleBtn.querySelector('i');
+
+            toggleBtn.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+
+        // 表单提交
+        function initFormSubmit() {
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 防止重复提交
+                if (isSubmitting) {
+                    return;
+                }
+
+                // 收集表单数据
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                const phone = document.getElementById('phone').value.trim();
+
+                // 验证所有字段
+                let isValid = true;
+
+                if (username.length < 3) {
+                    showError(document.getElementById('username'), 'usernameError', '用户名至少需要3个字符');
+                    isValid = false;
+                }
+
+                if (password.length < 6) {
+                    showError(document.getElementById('password'), 'passwordError', '密码至少需要6个字符');
+                    isValid = false;
+                }
+
+                if (!merchantStore.validatePhone(phone)) {
+                    showError(document.getElementById('phone'), 'phoneError', '请输入正确的手机号');
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    showAlert('error', '请完善所有必填信息');
+                    return;
+                }
+
+                // 显示加载状态
+                setLoading(true);
+
+                // 使用merchantStore进行验证
+                const result = merchantStore.verifyMerchant(username, password, phone);
+
+                // 模拟网络延迟效果（可选，增强用户体验）
+                setTimeout(function() {
+                    setLoading(false);
+
+                    if (result.success) {
+                        // 验证成功，显示成功动画并跳转
+                        showSuccessAndRedirect();
+                    } else {
+                        // 验证失败，显示错误
+                        showAlert('error', result.message);
+                        
+                        // 根据错误类型标记错误字段
+                        if (result.message.includes('用户名') || result.message.includes('密码')) {
+                            document.getElementById('username').classList.add('error');
+                            document.getElementById('password').classList.add('error');
+                        } else if (result.message.includes('手机号')) {
+                            document.getElementById('phone').classList.add('error');
+                        }
+                    }
+                }, 800); // 800ms延迟模拟网络请求
+            });
+        }
+
+        // 设置加载状态
+        function setLoading(loading) {
+            const btn = document.getElementById('loginBtn');
+            const btnText = btn.querySelector('span');
+            const btnIcon = btn.querySelector('i');
+            
+            isSubmitting = loading;
+
+            if (loading) {
+                btn.disabled = true;
+                btn.classList.add('loading');
+                btnText.textContent = '验证中...';
+                btnIcon.className = 'spinner';
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btnText.textContent = '登录验证';
+                btnIcon.className = 'fas fa-sign-in-alt';
+            }
+        }
+
+        // 显示提示框
+        function showAlert(type, message) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = 'alert alert-' + type;
+            
+            const icon = type === 'error' ? 'fa-exclamation-circle' : 
+                        type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
+            
+            alertBox.innerHTML = `<i class="fas ${icon}"></i>${message}`;
+            alertBox.style.display = 'block';
+
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // 显示成功动画并跳转
+        function showSuccessAndRedirect() {
+            const overlay = document.getElementById('successOverlay');
+            overlay.classList.add('active');
+
+            // 1.5秒后跳转到商家后台
+            setTimeout(() => {
+                window.location.href = 'merchant-dashboard.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
+

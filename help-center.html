@@ -1,0 +1,627 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助中心 - 电商平台</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to right, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+        }
+
+        .top-frame-container {
+            width: 100%;
+            position: relative;
+            z-index: 100;
+        }
+
+        #topFrame {
+            width: 100%;
+            height: 280px;
+            border: none;
+            display: block;
+            overflow: visible;
+        }
+
+        .help-center {
+            max-width: 1200px;
+            margin: -100px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 50;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            font-size: 14px;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #ff6b6b;
+        }
+
+        .breadcrumb span {
+            color: #999;
+            margin: 0 8px;
+        }
+
+        .breadcrumb .current {
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #ff6b6b;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        .search-button {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+
+        .search-button i {
+            margin-right: 8px;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 24px;
+        }
+
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .category-list {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .category-title {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .category-item {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .category-item.active {
+            background-color: #fff3f3;
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        .category-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .content-area {
+            flex: 1;
+        }
+
+        .faq-section {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 24px;
+        }
+
+        .faq-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-title i {
+            color: #ff6b6b;
+        }
+
+        .faq-list {
+            list-style: none;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.2s ease;
+        }
+
+        .faq-question:hover {
+            color: #ff6b6b;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: #ff6b6b;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            display: none;
+            margin-top: 14px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #666;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .faq-answer.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .no-results i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #ddd;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .contact-section p {
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .back-home-btn:active {
+            transform: translateY(0);
+        }
+
+        .back-home-btn i {
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-frame-container">
+        <iframe id="topFrame" src="../top.html"></iframe>
+    </div>
+
+    <div class="help-center">
+        <div class="breadcrumb">
+            <a href="../index.html">首页</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span class="current">帮助中心</span>
+        </div>
+
+        <div class="page-header">
+            <h1><i class="fas fa-question-circle"></i> 帮助中心</h1>
+            <p>快速找到您需要的答案，解决购物过程中的各种问题</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="搜索常见问题..." id="searchInput">
+                <button class="search-button" onclick="searchFAQ()">
+                    <i class="fas fa-search"></i> 搜索
+                </button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="category-list">
+                    <div class="category-title">问题分类</div>
+                    <div class="category-item active" onclick="filterFAQ('all')">
+                        <i class="fas fa-th-large"></i> 全部问题
+                    </div>
+                    <div class="category-item" onclick="filterFAQ('order')">
+                        <i class="fas fa-shopping-cart"></i> 订单相关
+                    </div>
+                    <div class="category-item" onclick="filterFAQ('payment')">
+                        <i class="fas fa-credit-card"></i> 支付问题
+                    </div>
+                    <div class="category-item" onclick="filterFAQ('return')">
+                        <i class="fas fa-undo"></i> 退换货
+                    </div>
+                    <div class="category-item" onclick="filterFAQ('account')">
+                        <i class="fas fa-user"></i> 账户问题
+                    </div>
+                    <div class="category-item" onclick="filterFAQ('delivery')">
+                        <i class="fas fa-truck"></i> 物流配送
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <div class="faq-section">
+                    <div class="faq-title">
+                        <i class="fas fa-list-ul"></i> 常见问题
+                    </div>
+                    <ul class="faq-list" id="faqList">
+                        <li class="faq-item" data-category="order">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>如何查看我的订单状态？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                登录您的账户后，点击顶部导航栏的"我的订单"，在下拉菜单中选择相应的订单状态即可查看。您也可以在"个人中心"中找到订单管理入口。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="order">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>如何修改订单信息？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                在订单提交后30分钟内，如果订单状态为"待付款"，您可以在订单详情页修改收货地址和联系电话。如果超过30分钟或订单已发货，请联系客服协助处理。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="payment">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>支持哪些支付方式？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                我们支持微信支付、支付宝、银行卡支付等多种支付方式。在结算页面您可以选择最方便的支付方式完成付款。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="payment">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>支付失败怎么办？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                支付失败可能是由于网络问题、余额不足或银行卡限额等原因。请检查支付账户余额和网络连接，然后重新尝试支付。如果问题持续存在，请联系客服。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="return">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>如何申请退换货？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                在订单详情页点击"申请退换货"，选择退换货原因并填写相关信息。客服会在24小时内审核您的申请，请保持手机畅通。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="return">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>退换货需要多长时间？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                退货申请审核通过后，请在7天内将商品寄回。商家收到退货后会在3个工作日内完成退款或换货处理。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="account">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>忘记密码怎么办？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                在登录页面点击"忘记密码"，通过注册时的手机号或邮箱找回密码。系统会发送验证码到您的手机或邮箱，请按照提示重置密码。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="account">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>如何修改绑定的手机号？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                在"个人中心"-"账户设置"中找到"安全设置"，点击"更换手机号"。需要验证原手机号后才能绑定新的手机号。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="delivery">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>商品多久能送达？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                一般情况下，同城配送1-2天，省内2-3天，跨省3-5天。具体送达时间取决于配送地址和快递公司。您可以在订单详情页查看物流进度。
+                            </div>
+                        </li>
+                        <li class="faq-item" data-category="delivery">
+                            <div class="faq-question" onclick="toggleAnswer(this)">
+                                <span>如何查询物流信息？</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                在订单详情页点击"查看物流"，可以看到完整的物流跟踪信息，包括快递单号、配送进度和预计送达时间。
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="contact-section">
+                    <h3><i class="fas fa-headset"></i> 没有找到答案？</h3>
+                    <p>我们的客服团队随时为您服务</p>
+                    <a href="complaint.html" class="contact-btn">联系客服</a>
+                </div>
+
+                <div class="back-to-home">
+                    <a href="../index.html" class="back-home-btn">
+                        <i class="fas fa-home"></i> 返回首页
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(element) {
+            const question = element;
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+
+            question.classList.toggle('active');
+            answer.classList.toggle('active');
+            icon.classList.toggle('rotate');
+        }
+
+        function filterFAQ(category) {
+            const categoryItems = document.querySelectorAll('.category-item');
+            categoryItems.forEach(item => item.classList.remove('active'));
+            
+            const clickedItem = event.currentTarget;
+            clickedItem.classList.add('active');
+
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function searchFAQ() {
+            const searchInput = document.getElementById('searchInput');
+            const keyword = searchInput.value.toLowerCase().trim();
+            
+            if (!keyword) {
+                filterFAQ('all');
+                return;
+            }
+
+            const faqItems = document.querySelectorAll('.faq-item');
+            let hasResults = false;
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                
+                if (question.includes(keyword) || answer.includes(keyword)) {
+                    item.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (!hasResults) {
+                document.getElementById('faqList').innerHTML = `
+                    <li class="faq-item">
+                        <div class="no-results">
+                            <i class="fas fa-search"></i>
+                            <p>没有找到相关问题</p>
+                            <p style="font-size: 14px;">请尝试其他关键词，或联系客服咨询</p>
+                        </div>
+                    </li>
+                `;
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchFAQ();
+            }
+        });
+    </script>
+</body>
+</html>
